@@ -30,7 +30,7 @@ core-wizard-set-namespace:
 wizard-new-controller: .onyx
 	$(eval CONTROLLER_NAME := $(shell bash -c 'read -p "Enter your controller name : " controllerName; echo $$controllerName'))
 	$(eval TARGET_DIR := "src/Controllers/${CONTROLLER_NAME}")
-	@cp -rf wizards/controller/* src/Controllers
+	@cp -rf vendor/onyx/core/wizards/controller/* src/Controllers
 	@mv src/Controllers/__ONYX_ControllerName ${TARGET_DIR}
 	@find ${TARGET_DIR} -type f -exec sed -i 's/__ONYX_ControllerName/${CONTROLLER_NAME}/g' {} \;
 	@find ${TARGET_DIR} -type f -exec sed -i 's/__ONYX_Namespace/$(call convert-namespace,$(NAMESPACE))/g' {} \;
