@@ -29,35 +29,35 @@ abstract class Application extends \Silex\Application
         $this->mountControllerProviders();
     }
 
-    private function loadConfiguration($configuration)
+    private function loadConfiguration($configuration): void
     {
         $this['configuration'] = $configuration;
     }
 
-    private function initializePaths($rootDir)
+    private function initializePaths($rootDir): void
     {
         $this['root.path'] = $this->enforceEndingSlash($rootDir);
         $this['documentRoot.path'] = $this['root.path'] . 'www' . DIRECTORY_SEPARATOR;
         $this['var.path'] = $this['root.path'] . $this->removeWrappingSlashes($this['configuration']->readRequired('app/var.path')) . DIRECTORY_SEPARATOR;
     }
 
-    private function enableDebug()
+    private function enableDebug(): void
     {
         $this['debug'] = $this['configuration']->read('app/debug', false);
     }
 
-    private function initializeUrlGeneratorProvider()
+    private function initializeUrlGeneratorProvider(): void
     {
         $this->register(new RoutingServiceProvider());
     }
 
-    protected function registerProviders()
+    protected function registerProviders(): void
     {
     }
 
-    protected function initializeServices()
+    protected function initializeServices(): void
     {
     }
 
-    abstract protected function mountControllerProviders();
+    abstract protected function mountControllerProviders(): void;
 }

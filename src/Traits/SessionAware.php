@@ -9,34 +9,34 @@ trait SessionAware
     private
         $session;
 
-    public function setSession(Session $session)
+    public function setSession(Session $session): self
     {
         $this->session = $session;
 
         return $this;
     }
 
-    private function addSuccessFlash($message)
+    private function addSuccessFlash($message): void
     {
         return $this->addFlash($message, 'success');
     }
 
-    private function addInfoFlash($message)
+    private function addInfoFlash($message): void
     {
         return $this->addFlash($message, 'info');
     }
 
-    private function addWarningFlash($message)
+    private function addWarningFlash($message): void
     {
         return $this->addFlash($message, 'warning');
     }
 
-    private function addErrorFlash($message)
+    private function addErrorFlash($message): void
     {
         return $this->addFlash($message, 'error');
     }
 
-    private function addResultFlash($result, $successMessage, $errorMessage)
+    private function addResultFlash($result, $successMessage, $errorMessage): void
     {
         if($result)
         {
@@ -46,8 +46,8 @@ trait SessionAware
         return $this->addErrorFlash($errorMessage);
     }
 
-    private function addFlash($message, $type = 'info')
+    private function addFlash($message, $type = 'info'): void
     {
-        return $this->session->getFlashBag()->add($type, $message);
+        $this->session->getFlashBag()->add($type, $message);
     }
 }
