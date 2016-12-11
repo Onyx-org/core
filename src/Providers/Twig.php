@@ -12,14 +12,14 @@ class Twig implements ServiceProviderInterface
     private
         $container;
 
-    public function register(Container $container)
+    public function register(Container $container): void
     {
         $this->container = $container;
         $this->validatePuzzleConfiguration($container);
         $this->initializeTwigProvider($container);
     }
 
-    public function addPath($paths, $prioritary = true)
+    public function addPath($paths, $prioritary = true): void
     {
         if(! is_array($paths))
         {
@@ -45,7 +45,7 @@ class Twig implements ServiceProviderInterface
         };
     }
 
-    private function initializeTwigProvider(Container $container)
+    private function initializeTwigProvider(Container $container): void
     {
         $container->register(new TwigServiceProvider());
 
@@ -61,7 +61,7 @@ class Twig implements ServiceProviderInterface
         };
     }
 
-    private function retrieveExistingTwigPath()
+    private function retrieveExistingTwigPath(): array
     {
         $path = array();
 
@@ -78,7 +78,7 @@ class Twig implements ServiceProviderInterface
         return $path;
     }
 
-    private function validatePuzzleConfiguration(Container $container)
+    private function validatePuzzleConfiguration(Container $container): void
     {
         if(! isset($container['configuration']) || ! $container['configuration'] instanceof Configuration)
         {
