@@ -6,7 +6,7 @@ use Onyx\Persistence\Field;
 use Onyx\Persistence\Exceptions\InvalidDataException;
 use Onyx\Persistence\FieldTypes;
 
-class BooleanField extends RawField implements Field
+class Boolean extends Raw implements Field
 {
     private
         $allowStringValues,
@@ -104,7 +104,7 @@ class BooleanField extends RawField implements Field
 
         return $this;
     }
-    
+
     public function getType()
     {
         return FieldTypes::BOOLEAN;

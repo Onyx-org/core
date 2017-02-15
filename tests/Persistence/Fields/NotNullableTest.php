@@ -12,7 +12,7 @@ class NotNullableTest extends AbstractFieldTestCase
         $notNullableIntegerField = new NotNullableField(new IntegerField());
         $notNullableRawField = new NotNullableField(new Raw());
 
-        $emptyAsNullBooleanField = new NotNullableField(new  BooleanField());
+        $emptyAsNullBooleanField = new NotNullableField(new Boolean());
         $emptyAsNullBooleanField->emptyAsNull();
 
         return array(
@@ -28,7 +28,7 @@ class NotNullableTest extends AbstractFieldTestCase
     {
         $notNullableRawField = new NotNullableField(new Raw());
 
-        $emptyAsNullBooleanField = new NotNullableField(new  BooleanField());
+        $emptyAsNullBooleanField = new NotNullableField(new Boolean());
         $emptyAsNullBooleanField->emptyAsNull();
 
         return array(

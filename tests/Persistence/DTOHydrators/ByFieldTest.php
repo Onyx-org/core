@@ -137,7 +137,7 @@ class ByFieldTest extends \PHPUnit\Framework\TestCase
         (
             'stringField' => new Fields\StringField('stringField'),
             'integerField' => new Fields\IntegerField(array('sub_array1', 'integer_field')),
-            'booleanFieldArray' => new Fields\ArrayField('boolean_field_array', new Fields\BooleanField())
+            'booleanFieldArray' => new Fields\ArrayField('boolean_field_array', new Fields\Boolean())
         );
     }
 

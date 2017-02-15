@@ -11,7 +11,7 @@ class BooleanTest extends \PHPUnit\Framework\TestCase
      */
     public function testConvertNoRights($value, $expected)
     {
-        $field = new  BooleanField();
+        $field = new  Boolean();
 
         $convertedValue = $field->convert($value);
         $this->assertSame($expected, $convertedValue);
@@ -31,7 +31,7 @@ class BooleanTest extends \PHPUnit\Framework\TestCase
      */
     public function testConvertAllowString($value, $expected)
     {
-        $field = (new  BooleanField())->allowStringValues();
+        $field = (new  Boolean())->allowStringValues();
 
         $convertedValue = $field->convert($value);
         $this->assertSame($expected, $convertedValue);
@@ -52,7 +52,7 @@ class BooleanTest extends \PHPUnit\Framework\TestCase
      */
     public function testConvertAllowInteger($value, $expected)
     {
-        $field = (new  BooleanField())->allowIntegerValues();
+        $field = (new  Boolean())->allowIntegerValues();
 
         $convertedValue = $field->convert($value);
         $this->assertSame($expected, $convertedValue);
@@ -73,7 +73,7 @@ class BooleanTest extends \PHPUnit\Framework\TestCase
      */
     public function testConvertFullRights($value, $expected)
     {
-        $field = (new  BooleanField())->allowIntegerValues()->allowStringValues();
+        $field = (new  Boolean())->allowIntegerValues()->allowStringValues();
 
         $convertedValue = $field->convert($value);
         $this->assertSame($expected, $convertedValue);
@@ -102,10 +102,10 @@ class BooleanTest extends \PHPUnit\Framework\TestCase
 
     public function providerTestConvertWithExceptions()
     {
-        $noRightsBoolean = new  BooleanField();
-        $fullRightsBoolean = (new  BooleanField())->allowIntegerValues()->allowStringValues();
-        $allowStringBoolean = (new  BooleanField())->allowStringValues();
-        $allowIntegerBoolean = (new  BooleanField())->allowIntegerValues();
+        $noRightsBoolean = new  Boolean();
+        $fullRightsBoolean = (new  Boolean())->allowIntegerValues()->allowStringValues();
+        $allowStringBoolean = (new  Boolean())->allowStringValues();
+        $allowIntegerBoolean = (new  Boolean())->allowIntegerValues();
 
         return array(
             'Boolean full rights - "true"' => array($fullRightsBoolean, "true"),
