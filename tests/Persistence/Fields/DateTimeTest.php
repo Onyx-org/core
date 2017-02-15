@@ -9,7 +9,7 @@ class DateTimeTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
-        $this->field = new DateTimeField('test', DateTimeField::MYSQL_FORMAT);
+        $this->field = new DateTime('test', DateTime::MYSQL_FORMAT);
     }
 
     public function testConvertNull()
@@ -64,7 +64,7 @@ class DateTimeTest extends \PHPUnit\Framework\TestCase
 
     private function getDate($dateString)
     {
-        $date = \DateTime::createFromFormat(DateTimeField::MYSQL_FORMAT, $dateString);
+        $date = \DateTime::createFromFormat(DateTime::MYSQL_FORMAT, $dateString);
 
         return $date;
     }

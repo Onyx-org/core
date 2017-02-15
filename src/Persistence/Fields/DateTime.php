@@ -6,7 +6,7 @@ use Onyx\Persistence\Field;
 use Onyx\Persistence\Exceptions\InvalidDataException;
 use Onyx\Persistence\FieldTypes;
 
-class DateTimeField extends RawField implements Field
+class DateTime extends Raw implements Field
 {
     const
         MYSQL_FORMAT = 'Y-m-d H:i:s';
@@ -94,7 +94,7 @@ class DateTimeField extends RawField implements Field
 
         throw new InvalidDataException($message, $code, $exception);
     }
-    
+
     public function getType()
     {
         return FieldTypes::DATETIME;
