@@ -5,7 +5,7 @@ namespace Onyx\Persistence\Fields;
 use Onyx\Persistence\Field;
 use Onyx\Persistence\FieldTypes;
 
-class UnsignedIntegerField extends IntegerField implements Field
+class UnsignedInteger extends Integer implements Field
 {
     public function __construct($namePath = array())
     {
@@ -23,7 +23,7 @@ class UnsignedIntegerField extends IntegerField implements Field
 
         return parent::setMin($value);
     }
-    
+
     public function getType()
     {
         return FieldTypes::INTEGER;

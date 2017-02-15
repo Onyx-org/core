@@ -9,7 +9,7 @@ class NotNullableTest extends AbstractFieldTestCase
     public function providerTestConvert()
     {
         $notNullableStringField = new NotNullableField(new StringField());
-        $notNullableIntegerField = new NotNullableField(new IntegerField());
+        $notNullableIntegerField = new NotNullableField(new Integer());
         $notNullableRawField = new NotNullableField(new Raw());
 
         $emptyAsNullBooleanField = new NotNullableField(new Boolean());

@@ -9,7 +9,7 @@ class ArrayFieldTest extends AbstractFieldTestCase
     public function providerTestConvert()
     {
         $simpleArrayField = new ArrayField();
-        $integerArrayField = new ArrayField('test', new  IntegerField());
+        $integerArrayField = new ArrayField('test', new  Integer());
 
         return array(
             'Null' => array($simpleArrayField, null, null),
@@ -30,7 +30,7 @@ class ArrayFieldTest extends AbstractFieldTestCase
     public function providerTestConvertWithExceptions()
     {
         $simpleArrayField = new ArrayField();
-        $integerArrayField = new ArrayField('test', new  IntegerField());
+        $integerArrayField = new ArrayField('test', new  Integer());
 
         return array(
             'Empty string' => array($simpleArrayField, ""),

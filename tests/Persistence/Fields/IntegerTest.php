@@ -127,11 +127,11 @@ class IntegerTest extends AbstractFieldTestCase
 
     private function prepareIntegerField($min = null, $max = null, $isUnsigned = false)
     {
-        $field = new  IntegerField();
+        $field = new  Integer();
 
         if($isUnsigned)
         {
-            $field = new UnsignedIntegerField();
+            $field = new UnsignedInteger();
         }
 
         if(isset($min))
