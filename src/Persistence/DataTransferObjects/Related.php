@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Onyx\Persistence\DataTransferObjects;
 
 use Onyx\Persistence\DataTransferObject;
@@ -14,7 +16,7 @@ abstract class Related implements DataTransferObject
         $this->lazyLoadedAttributes = array_flip($attributeNames);
     }
 
-    public function load($attributeName)
+    public function load(string $attributeName)
     {
         $this->checkAttributeExists($attributeName);
 
@@ -29,19 +31,19 @@ abstract class Related implements DataTransferObject
         return $attribute;
     }
 
-    public function set($attributeName, $data)
+    public function set(string $attributeName, $data): void
     {
         $this->checkAttributeExists($attributeName);
 
         $this->lazyLoadedAttributes[$attributeName] = $data;
     }
 
-    private function exists($attributeName)
+    private function exists(string $attributeName): bool
     {
         return in_array($attributeName, array_keys($this->lazyLoadedAttributes));
     }
 
-    private function checkAttributeExists($attributeName)
+    private function checkAttributeExists(string $attributeName): void
     {
         if($this->exists($attributeName) === false)
         {

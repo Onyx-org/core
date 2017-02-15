@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Onyx\Persistence\DTOHydrators;
 
 use Onyx\Persistence\DTOHydrator;
@@ -22,28 +24,28 @@ class ByField implements DTOHydrator
         $this->valueTransformers = array();
     }
 
-    public function enableExceptions()
+    public function enableExceptions(): self
     {
         $this->enableExceptions = true;
 
         return $this;
     }
 
-    public function disableExceptions()
+    public function disableExceptions(): self
     {
         $this->enableExceptions = false;
 
         return $this;
     }
 
-    public function addValueTransformer(ValueTransformer $valueTransformer)
+    public function addValueTransformer(ValueTransformer $valueTransformer): self
     {
         $this->valueTransformers[] = $valueTransformer;
 
         return $this;
     }
 
-    public function hydrate(DataTransferObject $dto, array $dataset)
+    public function hydrate(DataTransferObject $dto, array $dataset): ?DataTransferObject
     {
         try
         {
@@ -68,7 +70,7 @@ class ByField implements DTOHydrator
         return $dto;
     }
 
-    private function hydrateField(DataTransferObject $dto, array $dataset, $fieldName, Field $field)
+    private function hydrateField(DataTransferObject $dto, array $dataset, string $fieldName, Field $field): void
     {
         if(! property_exists($dto, $fieldName))
         {
