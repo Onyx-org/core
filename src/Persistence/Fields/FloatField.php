@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Onyx\Persistence\Fields;
 
 use Onyx\Persistence\Field;
@@ -29,13 +31,13 @@ class FloatField extends Raw implements Field
         return $value;
     }
 
-    private function tryToConvertValue($value)
+    private function tryToConvertValue($value): ?float
     {
         $floatValue = null;
 
         if(is_numeric($value))
         {
-            if(preg_match('~^([-]?[0-9]*(\.[0-9]*)?)$~', $value) === 1)
+            if(preg_match('~^([-]?[0-9]*(\.[0-9]*)?)$~', (string) $value) === 1)
             {
                 $floatValue = (float) $value;
             }
@@ -49,7 +51,7 @@ class FloatField extends Raw implements Field
         return $floatValue;
     }
 
-    private function checkBounds($value)
+    private function checkBounds(?float $value): void
     {
         if(isset($this->min) && $value < $this->min)
         {
@@ -72,7 +74,7 @@ class FloatField extends Raw implements Field
         }
     }
 
-    private function triggerException($value)
+    private function triggerException($value): void
     {
         $printValue = "";
 
@@ -88,21 +90,21 @@ class FloatField extends Raw implements Field
         ));
     }
 
-    public function setMin($value)
+    public function setMin(float $value): self
     {
         $this->min = (float) $value;
 
         return $this;
     }
 
-    public function setMax($value)
+    public function setMax(float $value): self
     {
         $this->max = (float) $value;
 
         return $this;
     }
 
-    public function getType()
+    public function getType(): int
     {
         return FieldTypes::FLOAT;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Onyx\Persistence\Fields;
 
 use Onyx\Persistence\Field;
@@ -14,7 +16,7 @@ class DateTime extends Raw implements Field
     private
         $dateFormat;
 
-    public function __construct($namePath, $dateFormat)
+    public function __construct($namePath, string $dateFormat)
     {
         parent::__construct($namePath);
 
@@ -38,17 +40,20 @@ class DateTime extends Raw implements Field
         return $date;
     }
 
-    private function tryConvert($value)
+    private function tryConvert($value): ?\DateTime
     {
         $date = null;
         $exception = null;
 
         try
         {
-            $date = \DateTime::createFromFormat($this->dateFormat, $value);
-            $date = $this->checkStrictDateValidity($value, $date);
+            if(is_string($value))
+            {
+                $date = \DateTime::createFromFormat($this->dateFormat, $value);
+                $date = $this->checkStrictDateValidity($value, $date);
+            }
         }
-        catch(\Exception $e)
+        catch(\Throwable $e)
         {
             $exception = $e;
         }
@@ -61,7 +66,7 @@ class DateTime extends Raw implements Field
         return $date;
     }
 
-    private function checkStrictDateValidity($value, $date)
+    private function checkStrictDateValidity($value, $date): ?\DateTime
     {
         if(! $date instanceof \DateTime || $date->format($this->dateFormat) !== $value)
         {
@@ -71,7 +76,7 @@ class DateTime extends Raw implements Field
         return $date;
     }
 
-    private function throwException($value, \Exception $exception = null)
+    private function throwException($value, ?\Throwable $exception = null): void
     {
         $printValue = "";
         if(is_string($value) || is_numeric($value))
@@ -86,7 +91,7 @@ class DateTime extends Raw implements Field
                 $this->dateFormat
         );
 
-        $code = null;
+        $code = 13;
         if($exception !== null)
         {
             $code = $exception->getCode();
@@ -95,7 +100,7 @@ class DateTime extends Raw implements Field
         throw new InvalidDataException($message, $code, $exception);
     }
 
-    public function getType()
+    public function getType(): int
     {
         return FieldTypes::DATETIME;
     }

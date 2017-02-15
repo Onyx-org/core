@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Onyx\Persistence\Fields;
 
 use Onyx\Persistence\Field;
@@ -14,7 +16,7 @@ class UnsignedFloatField extends FloatField implements Field
         $this->setMin(0);
     }
 
-    public function setMin($value)
+    public function setMin(float $value): FloatField
     {
         if(is_float($value) && $value < 0)
         {
@@ -23,8 +25,8 @@ class UnsignedFloatField extends FloatField implements Field
 
         return parent::setMin($value);
     }
-    
-    public function getType()
+
+    public function getType(): int
     {
         return FieldTypes::FLOAT;
     }

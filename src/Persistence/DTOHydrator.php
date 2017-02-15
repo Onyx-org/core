@@ -4,9 +4,9 @@ namespace Onyx\Persistence;
 
 interface DTOHydrator
 {
-    public function enableExceptions();
+    public function enableExceptions(): DTOHydrator;
 
-    public function disableExceptions();
+    public function disableExceptions(): DTOHydrator;
 
-    public function hydrate(DataTransferObject $dto, array $dataset);
+    public function hydrate(DataTransferObject $dto, array $dataset): ?DataTransferObject;
 }

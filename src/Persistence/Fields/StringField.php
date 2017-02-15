@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Onyx\Persistence\Fields;
 
 use Onyx\Persistence\Field;
@@ -49,21 +51,21 @@ class StringField extends Raw implements Field
         return $value;
     }
 
-    public function minSize($value)
+    public function minSize(int $value): self
     {
-        $this->minSize = $value;
+        $this->minSize = (int) $value;
 
         return $this;
     }
 
-    public function maxSize($value)
+    public function maxSize(int $value): self
     {
-        $this->maxSize = $value;
+        $this->maxSize = (int) $value;
 
         return $this;
     }
 
-    public function getType()
+    public function getType(): int
     {
         return FieldTypes::STRING;
     }

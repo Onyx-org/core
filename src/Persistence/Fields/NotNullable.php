@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Onyx\Persistence\Fields;
 
 use Onyx\Persistence\Exceptions\InvalidDataException;
@@ -17,18 +19,19 @@ class NotNullable implements Field
         $this->emptyAsNull = false;
     }
 
-    public function emptyAsNull()
+    public function emptyAsNull(): self
     {
         $this->emptyAsNull = true;
 
         return $this;
     }
 
-    private function checkNull($value)
+    private function checkNull($value): void
     {
         if($value === null || ($this->emptyAsNull && $value === ""))
         {
             $message = sprintf("Value of %s can't be null", $this->getPrintableNamePath());
+
             throw new InvalidDataException($message);
         }
     }
@@ -40,17 +43,17 @@ class NotNullable implements Field
         return $this->field->convert($value);
     }
 
-    public function getNamePath()
+    public function getNamePath(): array
     {
         return $this->field->getNamePath();
     }
 
-    public function getPrintableNamePath()
+    public function getPrintableNamePath(): string
     {
         return $this->field->getPrintableNamePath();
     }
-    
-    public function getType()
+
+    public function getType(): int
     {
         return $this->field->getType();
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Onyx\Persistence\Fields;
 
 use Onyx\Persistence\Field;
@@ -19,7 +21,7 @@ class Raw implements Field
         }
     }
 
-    public function getNamePath()
+    public function getNamePath(): array
     {
         return $this->namePath;
     }
@@ -29,12 +31,12 @@ class Raw implements Field
         return $value;
     }
 
-    public function getPrintableNamePath()
+    public function getPrintableNamePath(): string
     {
         return '[' . join('][', $this->namePath) . ']';
     }
-    
-    public function getType()
+
+    public function getType(): int
     {
         return FieldTypes::RAW;
     }

@@ -4,11 +4,11 @@ namespace Onyx\Persistence;
 
 interface Field
 {
-    public function getNamePath();
+    public function getNamePath(): array;
 
     public function convert($value);
 
-    public function getPrintableNamePath();
-    
-    public function getType();
+    public function getPrintableNamePath(): string;
+
+    public function getType(): int;
 }

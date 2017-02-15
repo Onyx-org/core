@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Onyx\Persistence\Fields;
 
 use Onyx\Persistence\Field;
@@ -53,7 +55,7 @@ class ArrayField extends Raw implements Field
         return $value;
     }
 
-    public function getType()
+    public function getType(): int
     {
         return FieldTypes::ARRAY;
     }

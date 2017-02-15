@@ -24,14 +24,14 @@ class ByField implements DTOHydrator
         $this->valueTransformers = array();
     }
 
-    public function enableExceptions(): self
+    public function enableExceptions(): DTOHydrator
     {
         $this->enableExceptions = true;
 
         return $this;
     }
 
-    public function disableExceptions(): self
+    public function disableExceptions(): DTOHydrator
     {
         $this->enableExceptions = false;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Onyx\Persistence\Fields;
 
 use Onyx\Persistence\Field;
@@ -47,7 +49,7 @@ class Boolean extends Raw implements Field
         return (bool) $boolValue;
     }
 
-    private function tryConvertStringValue($value)
+    private function tryConvertStringValue($value): ?bool
     {
         $boolValue = null;
         if(is_string($value))
@@ -61,7 +63,7 @@ class Boolean extends Raw implements Field
         return $boolValue;
     }
 
-    private function tryConvertIntValue($value)
+    private function tryConvertIntValue($value): ?bool
     {
         $boolValue = null;
         if(is_integer($value))
@@ -75,13 +77,13 @@ class Boolean extends Raw implements Field
         return $boolValue;
     }
 
-    private function triggerConvertException($value)
+    private function triggerConvertException($value): void
     {
         $printValue = "";
 
         if(is_string($value) || is_numeric($value))
         {
-            $printValue = ' = ' . (string)$value;
+            $printValue = ' = ' . (string) $value;
         }
 
         throw new InvalidDataException(sprintf(
@@ -91,21 +93,21 @@ class Boolean extends Raw implements Field
         ));
     }
 
-    public function allowStringValues()
+    public function allowStringValues(): self
     {
         $this->allowStringValues = true;
 
         return $this;
     }
 
-    public function allowIntegerValues()
+    public function allowIntegerValues(): self
     {
         $this->allowIntegerValues = true;
 
         return $this;
     }
 
-    public function getType()
+    public function getType(): int
     {
         return FieldTypes::BOOLEAN;
     }

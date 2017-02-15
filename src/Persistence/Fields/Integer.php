@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Onyx\Persistence\Fields;
 
 use Onyx\Persistence\Field;
@@ -29,7 +31,7 @@ class Integer extends Raw implements Field
         return $value;
     }
 
-    private function tryToConvertValue($value)
+    private function tryToConvertValue($value): int
     {
         $intValue = null;
 
@@ -49,7 +51,7 @@ class Integer extends Raw implements Field
         return $intValue;
     }
 
-    private function checkBounds($value)
+    private function checkBounds(?int $value): void
     {
         if(isset($this->min) && $value < $this->min)
         {
@@ -72,7 +74,7 @@ class Integer extends Raw implements Field
         }
     }
 
-    private function triggerException($value)
+    private function triggerException($value): void
     {
         $printValue = "";
 
@@ -88,21 +90,21 @@ class Integer extends Raw implements Field
         ));
     }
 
-    public function setMin($value)
+    public function setMin(int $value): self
     {
         $this->min = (int) $value;
 
         return $this;
     }
 
-    public function setMax($value)
+    public function setMax(int $value): self
     {
         $this->max = (int) $value;
 
         return $this;
     }
 
-    public function getType()
+    public function getType(): int
     {
         return FieldTypes::INTEGER;
     }
