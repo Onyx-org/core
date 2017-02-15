@@ -10,5 +10,5 @@ interface FieldTypes
         BOOLEAN = 3,
         DATETIME = 4,
         RAW = 5,
-        ARRAYFIELD = 6;
+        ARRAY = 6;
 }

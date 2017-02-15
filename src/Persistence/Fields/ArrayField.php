@@ -51,9 +51,9 @@ class ArrayField extends RawField implements Field
 
         return $value;
     }
-    
+
     public function getType()
     {
-        return FieldTypes::ARRAYFIELD;
+        return FieldTypes::ARRAY;
     }
 }
