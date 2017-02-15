@@ -2,7 +2,7 @@
 
 namespace Onyx\Persistence\DTOHydrators;
 
-use Onyx\Persistence\ValueTransformers\ValueTransformer;
+use Onyx\Persistence\ValueTransformer;
 use Onyx\Persistence\Field;
 use Onyx\Persistence\FieldTypes;
 

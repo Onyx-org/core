@@ -6,7 +6,7 @@ use Onyx\Persistence\DTOHydrator;
 use Onyx\Persistence\DataTransferObject;
 use Onyx\Persistence\Field;
 use Onyx\Persistence\Exceptions\InvalidDataException;
-use Onyx\Persistence\ValueTransformers\ValueTransformer;
+use Onyx\Persistence\ValueTransformer;
 
 class ByField implements DTOHydrator
 {
