@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace __ONYX_Namespace\Controllers\__ONYX_ControllerName;
 
 use Onyx\Traits;
@@ -19,7 +21,7 @@ class Controller
         $this->logger = new NullLogger();
     }
 
-    public function homeAction()
+    public function homeAction(): Response
     {
         return $this->render('home.twig');
     }
