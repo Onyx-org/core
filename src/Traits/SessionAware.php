@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Onyx\Traits;
 
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -16,27 +18,27 @@ trait SessionAware
         return $this;
     }
 
-    private function addSuccessFlash($message): void
+    private function addSuccessFlash(string $message): void
     {
         return $this->addFlash($message, 'success');
     }
 
-    private function addInfoFlash($message): void
+    private function addInfoFlash(string $message): void
     {
         return $this->addFlash($message, 'info');
     }
 
-    private function addWarningFlash($message): void
+    private function addWarningFlash(string $message): void
     {
         return $this->addFlash($message, 'warning');
     }
 
-    private function addErrorFlash($message): void
+    private function addErrorFlash(string $message): void
     {
         return $this->addFlash($message, 'error');
     }
 
-    private function addResultFlash($result, $successMessage, $errorMessage): void
+    private function addResultFlash($result, string $successMessage, string $errorMessage): void
     {
         if($result)
         {
@@ -46,7 +48,7 @@ trait SessionAware
         return $this->addErrorFlash($errorMessage);
     }
 
-    private function addFlash($message, $type = 'info'): void
+    private function addFlash(string $message, string $type = 'info'): void
     {
         $this->session->getFlashBag()->add($type, $message);
     }

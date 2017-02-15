@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Onyx\Providers;
 
 use Pimple\ServiceProviderInterface;
@@ -19,7 +21,7 @@ class Twig implements ServiceProviderInterface
         $this->initializeTwigProvider($container);
     }
 
-    public function addPath($paths, $prioritary = true): void
+    public function addPath($paths, bool $prioritary = true): void
     {
         if(! is_array($paths))
         {

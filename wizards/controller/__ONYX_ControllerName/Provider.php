@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace __ONYX_Namespace\Controllers\__ONYX_ControllerName;
 
 use Silex\Application;
