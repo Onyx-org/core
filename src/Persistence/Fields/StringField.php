@@ -28,18 +28,21 @@ class StringField extends Raw implements Field
             }
 
             $message = sprintf('Value %s%s is not a valid string.', $this->getPrintableNamePath(), $printValue);
+
             throw new InvalidDataException($message);
         }
 
         if(isset($this->minSize) && strlen($value) < $this->minSize)
         {
             $message = sprintf('Value %s = "%s" is too short. Min length is : %s.', $this->getPrintableNamePath(), $value, $this->minSize);
+
             throw new InvalidDataException($message);
         }
 
         if(isset($this->maxSize) && strlen($value) > $this->maxSize)
         {
             $message = sprintf('Value %s = "%s" is too long. Max length is : %s.', $this->getPrintableNamePath(), $value, $this->maxSize);
+
             throw new InvalidDataException($message);
         }
 

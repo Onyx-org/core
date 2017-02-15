@@ -4,7 +4,7 @@ namespace Onyx\Persistence\Fields;
 
 require_once __DIR__ . '/AbstractFieldTestCase.php';
 
-class StringTest extends AbstractFieldTestCase
+class StringFieldTest extends AbstractFieldTestCase
 {
     public function providerTestConvert()
     {

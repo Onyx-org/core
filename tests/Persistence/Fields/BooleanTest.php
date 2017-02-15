@@ -102,10 +102,10 @@ class BooleanTest extends \PHPUnit\Framework\TestCase
 
     public function providerTestConvertWithExceptions()
     {
-        $noRightsBoolean = new  Boolean();
-        $fullRightsBoolean = (new  Boolean())->allowIntegerValues()->allowStringValues();
-        $allowStringBoolean = (new  Boolean())->allowStringValues();
-        $allowIntegerBoolean = (new  Boolean())->allowIntegerValues();
+        $noRightsBoolean = new Boolean();
+        $fullRightsBoolean = (new Boolean())->allowIntegerValues()->allowStringValues();
+        $allowStringBoolean = (new Boolean())->allowStringValues();
+        $allowIntegerBoolean = (new Boolean())->allowIntegerValues();
 
         return array(
             'Boolean full rights - "true"' => array($fullRightsBoolean, "true"),

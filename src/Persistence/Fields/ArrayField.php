@@ -28,6 +28,7 @@ class ArrayField extends Raw implements Field
         if(! is_array($value))
         {
             $message = sprintf('Value of "%s" is not a valid array.', $this->getPrintableNamePath());
+
             throw new InvalidDataException($message);
         }
 
