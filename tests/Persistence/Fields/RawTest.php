@@ -11,7 +11,7 @@ class RawTest extends \PHPUnit\Framework\TestCase
      */
     public function testPrintableNamePath($fieldPath, $expected)
     {
-        $field = new RawField($fieldPath);
+        $field = new Raw($fieldPath);
 
         $value = $field->getPrintableNamePath();
 
@@ -40,8 +40,8 @@ class RawTest extends \PHPUnit\Framework\TestCase
 
     public function providerTestConvert()
     {
-        $stringPathRawField = new RawField('SimplePath');
-        $arrayPathRawField = new RawField(array('field1', 'field2', 'field3'));
+        $stringPathRawField = new Raw('SimplePath');
+        $arrayPathRawField = new Raw(array('field1', 'field2', 'field3'));
 
         return array(
             'Null' => array($stringPathRawField, null, null),

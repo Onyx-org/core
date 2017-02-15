@@ -6,7 +6,7 @@ use Onyx\Persistence\Field;
 use Onyx\Persistence\Exceptions\InvalidDataException;
 use Onyx\Persistence\FieldTypes;
 
-class StringField extends RawField implements Field
+class StringField extends Raw implements Field
 {
     private
         $minSize,

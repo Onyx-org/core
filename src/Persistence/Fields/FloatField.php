@@ -6,7 +6,7 @@ use Onyx\Persistence\Field;
 use Onyx\Persistence\Exceptions\InvalidDataException;
 use Onyx\Persistence\FieldTypes;
 
-class FloatField extends RawField implements Field
+class FloatField extends Raw implements Field
 {
     private
         $min,

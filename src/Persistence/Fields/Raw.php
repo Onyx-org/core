@@ -5,7 +5,7 @@ namespace Onyx\Persistence\Fields;
 use Onyx\Persistence\Field;
 use Onyx\Persistence\FieldTypes;
 
-class RawField implements Field
+class Raw implements Field
 {
     private
         $namePath;

@@ -6,7 +6,7 @@ use Onyx\Persistence\Field;
 use Onyx\Persistence\Exceptions\InvalidDataException;
 use Onyx\Persistence\FieldTypes;
 
-class ArrayField extends RawField implements Field
+class ArrayField extends Raw implements Field
 {
     private
         $itemField;
