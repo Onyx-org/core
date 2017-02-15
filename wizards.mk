@@ -7,7 +7,7 @@ include .onyx
 
 convert-namespace = $(subst ::,\\,$1)
 
-wizard-set-namespace: core-wizard-set-namespace dumpautoload
+wizard-set-namespace: core-wizard-set-namespace composer-dumpautoload
 
 core-wizard-set-namespace:
 	$(info )
