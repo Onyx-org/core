@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Onyx;
 
 use Puzzle\Configuration;
@@ -12,11 +14,11 @@ abstract class Application extends \Silex\Application
     use
         Traits\PathManipulation;
 
-    public function __construct(Configuration $configuration, $rootDir)
+    public function __construct(Configuration $configuration, string $rootDir)
     {
         parent::__construct();
 
-        $this->loadConfiguration($configuration);
+        $this['configuration'] = $configuration;
         $this->enableDebug();
         $this->initializePaths($rootDir);
 
@@ -29,12 +31,7 @@ abstract class Application extends \Silex\Application
         $this->mountControllerProviders();
     }
 
-    private function loadConfiguration($configuration): void
-    {
-        $this['configuration'] = $configuration;
-    }
-
-    private function initializePaths($rootDir): void
+    private function initializePaths(string $rootDir): void
     {
         $this['root.path'] = $this->enforceEndingSlash($rootDir);
         $this['documentRoot.path'] = $this['root.path'] . 'www' . DIRECTORY_SEPARATOR;

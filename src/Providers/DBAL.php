@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Onyx\Providers;
 
 use Pimple\ServiceProviderInterface;
@@ -32,7 +34,7 @@ class DBAL implements ServiceProviderInterface
         ));
     }
 
-    private function registerDatabase(Container $container, Configuration $configuration, $database): array
+    private function registerDatabase(Container $container, Configuration $configuration, string $database): array
     {
         $configuration = new PrefixedConfiguration($configuration, "db/$database");
 

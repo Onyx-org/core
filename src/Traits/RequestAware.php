@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Onyx\Traits;
 
 use Symfony\Component\HttpFoundation\RequestStack;
