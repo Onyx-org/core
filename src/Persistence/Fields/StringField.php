@@ -59,7 +59,7 @@ class StringField extends Raw implements Field
 
         return $this;
     }
-    
+
     public function getType()
     {
         return FieldTypes::STRING;
