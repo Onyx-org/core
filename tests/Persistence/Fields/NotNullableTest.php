@@ -8,11 +8,11 @@ class NotNullableTest extends AbstractFieldTestCase
 {
     public function providerTestConvert()
     {
-        $notNullableStringField = new NotNullableField(new StringField());
-        $notNullableIntegerField = new NotNullableField(new Integer());
-        $notNullableRawField = new NotNullableField(new Raw());
+        $notNullableStringField = new NotNullable(new StringField());
+        $notNullableIntegerField = new NotNullable(new Integer());
+        $notNullableRawField = new NotNullable(new Raw());
 
-        $emptyAsNullBooleanField = new NotNullableField(new Boolean());
+        $emptyAsNullBooleanField = new NotNullable(new Boolean());
         $emptyAsNullBooleanField->emptyAsNull();
 
         return array(
@@ -26,9 +26,9 @@ class NotNullableTest extends AbstractFieldTestCase
 
     public function providerTestConvertWithExceptions()
     {
-        $notNullableRawField = new NotNullableField(new Raw());
+        $notNullableRawField = new NotNullable(new Raw());
 
-        $emptyAsNullBooleanField = new NotNullableField(new Boolean());
+        $emptyAsNullBooleanField = new NotNullable(new Boolean());
         $emptyAsNullBooleanField->emptyAsNull();
 
         return array(

@@ -5,7 +5,7 @@ namespace Onyx\Persistence\Fields;
 use Onyx\Persistence\Exceptions\InvalidDataException;
 use Onyx\Persistence\Field;
 
-class NotNullableField implements Field
+class NotNullable implements Field
 {
     private
         $field,
