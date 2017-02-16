@@ -19,10 +19,12 @@ core-wizard-set-namespace:
 	$(eval BACKSLASHED_NEW_NAMESPACE := $(call convert-namespace,$(NEW_NAMESPACE)))
 	$(eval ESCAPED_NAMESPACE := $(subst \\,\\\\,$(BACKSLASHED_NAMESPACE)))
 	$(eval ESCAPED_NEW_NAMESPACE := $(subst \\,\\\\,$(BACKSLASHED_NEW_NAMESPACE)))
+	$(eval COMPOSE_PROJECT_NAME := $(shell echo $(NEW_NAMESPACE)| sed  's#::#-#'))
 	find src/ tests/ www/ -type f -exec sed -i 's/${BACKSLASHED_NAMESPACE}/$(BACKSLASHED_NEW_NAMESPACE)/g' {} \;
 	sed -i 's/${BACKSLASHED_NAMESPACE}/$(BACKSLASHED_NEW_NAMESPACE)/g' console
 	sed -i 's/${ESCAPED_NAMESPACE}\\\\/${ESCAPED_NEW_NAMESPACE}\\\\/g' ./composer.json
 	sed -i 's/^NAMESPACE=.*$$/NAMESPACE=$(NEW_NAMESPACE)/' ./.onyx
+	sed -i 's/^export COMPOSE_PROJECT_NAME=onyx$$/export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME)/g' ./docker/helpers.mk
 	@echo ""
 	@echo "Namespace updated !"
 	@echo ""
