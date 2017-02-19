@@ -1,5 +1,11 @@
 ONYX_CORE_DIR=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
+USER_ID=$(shell id -u)
+GROUP_ID=$(shell id -g)
+
+export USER_ID
+export GROUP_ID
+
 ifneq (,$(filter $(firstword $(MAKECMDGOALS)),composer phpunit))
     CLI_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
     $(eval $(CLI_ARGS):;@:)
@@ -15,6 +21,9 @@ endif
 composer: composer.phar
 	php composer.phar $(CLI_ARGS) $(COMPOSER_ARGS)
 
+composer-install: composer.phar
+	php composer.phar install --ignore-platform-reqs
+
 composer.phar:
 	curl -sS https://getcomposer.org/installer | php
 
@@ -25,9 +34,6 @@ clean: remove-deps
 remove-deps:
 	rm -rf vendor
 
-phpunit: vendor/bin/phpunit
-	docker run -it --rm --name phpunit -v ${ONYX_CORE_DIR}:/usr/src/onyx -w /usr/src/onyx php:7.1-cli vendor/bin/phpunit $(CLI_ARGS)
+-include phpunit.mk
 
-vendor/bin/phpunit: install
-
-.PHONY: composer clean remove-deps phpunit
+.PHONY: composer composer-install clean remove-deps

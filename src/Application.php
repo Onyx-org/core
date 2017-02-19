@@ -8,8 +8,9 @@ use Puzzle\Configuration;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\RoutingServiceProvider;
 use Onyx\Traits;
+use Psr\Log\LoggerInterface;
 
-abstract class Application extends \Silex\Application
+abstract class Application extends \Silex\Application implements ServiceContainer
 {
     use
         Traits\PathManipulation;
@@ -19,6 +20,7 @@ abstract class Application extends \Silex\Application
         parent::__construct();
 
         $this['configuration'] = $configuration;
+
         $this->enableDebug();
         $this->initializePaths($rootDir);
 
@@ -27,6 +29,7 @@ abstract class Application extends \Silex\Application
         $this->initializeUrlGeneratorProvider();
 
         $this->initializeServices();
+        $this->initializePlugins();
 
         $this->mountControllerProviders();
     }
@@ -54,6 +57,32 @@ abstract class Application extends \Silex\Application
 
     protected function initializeServices(): void
     {
+    }
+
+    private function initializePlugins(): void
+    {
+        $this['plugin.manager'] = function() {
+            $viewManager = null;
+            if(isset($this['view.manager']))
+            {
+                $viewManager = $this['view.manager'];
+            }
+
+            $manager = new PluginManager($this['configuration'], $viewManager, $this);
+
+            if(isset($this['logger.plugins']))
+            {
+                $logger = $this['logger.plugins'];
+                if($logger instanceof LoggerInterface)
+                {
+                    $manager->setLogger($logger);
+                }
+            }
+
+            return $manager;
+        };
+
+        $this['plugin.manager']->load();
     }
 
     abstract protected function mountControllerProviders(): void;

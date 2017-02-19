@@ -8,15 +8,17 @@ use Pimple\ServiceProviderInterface;
 use Puzzle\Configuration;
 use Pimple\Container;
 use Silex\Provider\TwigServiceProvider;
+use Onyx\ViewManager;
 
-class Twig implements ServiceProviderInterface
+class Twig implements ServiceProviderInterface, ViewManager
 {
     private
-        $container;
+        $paths;
 
     public function register(Container $container): void
     {
-        $this->container = $container;
+        $this->paths = [];
+
         $this->validatePuzzleConfiguration($container);
         $this->initializeTwigProvider($container);
     }
@@ -28,8 +30,6 @@ class Twig implements ServiceProviderInterface
             $paths = array($paths);
         }
 
-        $twigPath = $this->retrieveExistingTwigPath();
-
         $arrayAddFunction = 'array_push';
         if($prioritary === true)
         {
@@ -37,14 +37,10 @@ class Twig implements ServiceProviderInterface
             $paths = array_reverse($paths);
         }
 
-        $this->container['twig.path'] = function() use($twigPath, $paths, $arrayAddFunction) {
-            foreach ($paths as $path)
-            {
-                $arrayAddFunction($twigPath, $path);
-            }
-
-            return $twigPath;
-        };
+        foreach($paths as $path)
+        {
+            $arrayAddFunction($this->paths, $path);
+        }
     }
 
     private function initializeTwigProvider(Container $container): void
@@ -58,26 +54,14 @@ class Twig implements ServiceProviderInterface
             'auto_reload' => $container['configuration']->read('twig/developmentMode', false),
         );
 
-        $container['twig.path.manager'] = function ($c) {
+        $container['view.manager'] = function ($c) {
             return $this;
         };
-    }
 
-    private function retrieveExistingTwigPath(): array
-    {
-        $path = array();
+        $container['twig.path'] = function($c) {
+            return $this->paths;
+        };
 
-        if(isset($this->container['twig.path']))
-        {
-            $path = $this->container['twig.path'];
-
-            if($path instanceof \Closure)
-            {
-                $path = $path();
-            }
-        }
-
-        return $path;
     }
 
     private function validatePuzzleConfiguration(Container $container): void
