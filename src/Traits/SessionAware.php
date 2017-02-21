@@ -20,32 +20,34 @@ trait SessionAware
 
     private function addSuccessFlash(string $message): void
     {
-        return $this->addFlash($message, 'success');
+        $this->addFlash($message, 'success');
     }
 
     private function addInfoFlash(string $message): void
     {
-        return $this->addFlash($message, 'info');
+        $this->addFlash($message, 'info');
     }
 
     private function addWarningFlash(string $message): void
     {
-        return $this->addFlash($message, 'warning');
+        $this->addFlash($message, 'warning');
     }
 
     private function addErrorFlash(string $message): void
     {
-        return $this->addFlash($message, 'error');
+        $this->addFlash($message, 'error');
     }
 
     private function addResultFlash($result, string $successMessage, string $errorMessage): void
     {
         if($result)
         {
-            return $this->addSuccessFlash($successMessage);
+            $this->addSuccessFlash($successMessage);
+
+            return;
         }
 
-        return $this->addErrorFlash($errorMessage);
+        $this->addErrorFlash($errorMessage);
     }
 
     private function addFlash(string $message, string $type = 'info'): void
