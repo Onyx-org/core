@@ -23,7 +23,11 @@ class WebpackServiceProvider implements ServiceProviderInterface
 
         if($container->offsetExists('twig'))
         {
-            $container['twig']->addExtension(new TwigExtension($this['webpack.manifest']));
+            $container->extend('twig', function($twig) use ($container) {
+                $twig->addExtension(new TwigExtension($container['webpack.manifest']));
+
+                return $twig;
+            });
         }
     }
 }
