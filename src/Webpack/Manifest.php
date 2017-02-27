@@ -23,12 +23,12 @@ class Manifest
     {
         $manifest = json_decode($this->loadManifest($manifestPath), true);
 
-        if (!$manifest)
+        if(!$manifest)
         {
             throw new \Exception(sprintf('Could not decode %s. Is it valid JSON?', $this->manifestPath));
         }
 
-        if (!is_array($manifest))
+        if(!is_array($manifest))
         {
             throw new \Exception(sprintf('Expected an array from Webpack manifest %s', $this->manifestPath));
         }
@@ -43,7 +43,7 @@ class Manifest
 
     private function setChunkManifest(string $chunkManifestPath): void
     {
-        if (!is_file($chunkManifestPath))
+        if(!is_file($chunkManifestPath))
         {
             return;
         }
@@ -53,7 +53,7 @@ class Manifest
 
     private function loadManifest(string $manifestPath): string
     {
-        if (!is_file($manifestPath))
+        if(!is_file($manifestPath))
         {
             throw new \Exception(sprintf('The file %s could not be found. Did you forget to run webpack?', $manifestPath));
         }
@@ -65,7 +65,7 @@ class Manifest
     {
         $JSONManifest = file_get_contents($path);
 
-        if ($JSONManifest === false)
+        if($JSONManifest === false)
         {
             throw new \Exception(sprintf('Something went wrong while trying to read the file %s', $path));
         }

@@ -39,12 +39,12 @@ class TwigExtension extends \Twig_Extension implements \Twig_Extension_GlobalsIn
     {
         $validFiles = $this->manifest->getFiles();
 
-        if (!empty($includePattern))
+        if(!empty($includePattern))
         {
             $validFiles = $this->filterAssets($includePattern);
         }
 
-        if (!empty($excludePattern))
+        if(!empty($excludePattern))
         {
             $invalidFiles = $this->filterAssets($excludePattern);
             $validFiles = array_diff($validFiles, $invalidFiles);
@@ -78,7 +78,7 @@ class TwigExtension extends \Twig_Extension implements \Twig_Extension_GlobalsIn
     {
         $files = $this->manifest->getFiles();
 
-        if (!isset($files[$name]))
+        if(!isset($files[$name]))
         {
             return null;
         }
