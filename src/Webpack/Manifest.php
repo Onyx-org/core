@@ -6,7 +6,7 @@ class Manifest
 {
     private
         $files,
-        $chunkManifest = '';
+        $chunkManifest;
 
     public function __construct(string $manifestPath, string $chunkManifestPath)
     {
