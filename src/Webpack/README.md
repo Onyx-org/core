@@ -4,12 +4,11 @@ Must be declared after Twig.
 
 ```
 use Onyx\Providers;
-use Onyx\Webpack\WebpackServiceProvider;
 
 // [...]
 
 $this->register(new Providers\Twig());
-$this->register(new WebpackServiceProvider());
+$this->register(new Providers\Webpack());
 ```
 
 Example in Twig views :

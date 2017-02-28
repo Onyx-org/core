@@ -1,16 +1,16 @@
 <?php
 
-namespace Onyx\Webpack;
+namespace Onyx\Providers;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Puzzle\Pieces\PathManipulation;
 use Onyx\Webpack\Manifest;
-use Onyx\Traits;
+use Onyx\Webpack\TwigExtension;
 
-class WebpackServiceProvider implements ServiceProviderInterface
+class Webpack implements ServiceProviderInterface
 {
-    use
-        Traits\PathManipulation;
+    use PathManipulation;
 
     public function register(Container $container)
     {

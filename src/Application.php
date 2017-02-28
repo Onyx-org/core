@@ -7,13 +7,12 @@ namespace Onyx;
 use Puzzle\Configuration;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\RoutingServiceProvider;
-use Onyx\Traits;
 use Psr\Log\LoggerInterface;
+use Puzzle\Pieces\PathManipulation;
 
 abstract class Application extends \Silex\Application implements ServiceContainer
 {
-    use
-        Traits\PathManipulation;
+    use PathManipulation;
 
     public function __construct(Configuration $configuration, string $rootDir)
     {
