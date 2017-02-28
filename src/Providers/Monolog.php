@@ -10,7 +10,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Processor\IntrospectionProcessor;
 use Silex\Provider\MonologServiceProvider;
 use Monolog\Handler\HandlerInterface;
-use Blockos\Silex\Services\Providers\Monolog\HandlerCollector;
+use Onyx\Logger\Monolog\HandlerCollector;
 use Puzzle\Pieces\PathManipulation;
 use Pimple\Container;
 
