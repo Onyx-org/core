@@ -4,11 +4,11 @@
     "require": {
         "php": ">=7.1.0",
         "silex/silex": "~2.0",
-        "puzzle/configuration": "~2.0.1",
+        "puzzle/configuration": "~3.0",
         "twig/twig": "~1.27",
         "symfony/console" : "~3.1",
         "symfony/twig-bridge" : "~3.1",
-        "puzzle/pieces": "~1.0",
+        "puzzle/pieces": "~2.0",
         "monolog/monolog": "~1.22",
         "psr/log": "~1.0"
     },
