@@ -158,7 +158,7 @@ class Monolog implements ServiceProviderInterface
 
                     if($options['handlers.allowIntrospection'] === true)
                     {
-                        $this->addIntrospection($container, $handler);
+                        $this->addIntrospection($c, $handler);
                     }
                 }
 
