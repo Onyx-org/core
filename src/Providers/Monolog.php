@@ -11,6 +11,7 @@ use Monolog\Processor\IntrospectionProcessor;
 use Silex\Provider\MonologServiceProvider;
 use Monolog\Handler\HandlerInterface;
 use Onyx\Logger\Monolog\HandlerCollector;
+use Onyx\Logger\MonologHandlerCollector;
 use Puzzle\Pieces\PathManipulation;
 use Pimple\Container;
 
