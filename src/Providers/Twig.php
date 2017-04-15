@@ -47,7 +47,12 @@ class Twig implements ServiceProviderInterface, ViewManager
     {
         $container->register(new TwigServiceProvider());
 
-        $container['twig.cache.path'] = $container['var.path'] . $container['configuration']->read('twig/cache/directory', false);
+        $cacheDirectory = $container['configuration']->read('twig/cache/directory', false);
+        if($cacheDirectory !== false)
+        {
+            $cacheDirectory = $container['var.path'] . $cacheDirectory;
+        }
+        $container['twig.cache.path'] = $cacheDirectory;
 
         $container['twig.options'] = array(
             'cache' => $container['twig.cache.path'],
