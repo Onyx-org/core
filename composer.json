@@ -1,6 +1,8 @@
 {
     "name": "onyx/core",
     "type": "library",
+    "license": "MIT",
+    "description": "Onyx library for Onyx skeleton",
     "require": {
         "php": ">=7.1.0",
         "silex/silex": "~2.0",
