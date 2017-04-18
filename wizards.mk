@@ -24,7 +24,7 @@ core-wizard-set-namespace:
 	sed -i 's/${BACKSLASHED_NAMESPACE}/$(BACKSLASHED_NEW_NAMESPACE)/g' console
 	sed -i 's/${ESCAPED_NAMESPACE}\\\\/${ESCAPED_NEW_NAMESPACE}\\\\/g' ./composer.json
 	sed -i 's/^NAMESPACE=.*$$/NAMESPACE=$(NEW_NAMESPACE)/' ./.onyx
-	sed -i 's/^export COMPOSE_PROJECT_NAME=onyx$$/export COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME)/g' ./docker/helpers.mk
+	sed -i 's/^COMPOSE_PROJECT_NAME=onyx$$/COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME)/g' ./.env
 	@echo ""
 	@echo "Namespace updated !"
 	@echo ""
