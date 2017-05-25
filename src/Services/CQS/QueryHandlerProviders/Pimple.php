@@ -13,19 +13,22 @@ use Onyx\Services\ServiceNameComputer;
 class Pimple implements QueryHandlerProvider
 {
     private const
-        QUERY_HANDLER_PREFIX = 'query.handlers';
+        QUERY_HANDLER_PREFIX = 'query.handlers',
+        DEFAULT_NAMESPACE_SEPARATOR = 'Domain\Queries';
 
     private
-        $container;
+        $container,
+        $namespaceSeparator;
 
-    public function __construct(Container $container)
+    public function __construct(Container $container, string $namespaceSeparator = self::DEFAULT_NAMESPACE_SEPARATOR)
     {
         $this->container = $container;
+        $this->namespaceSeparator = $namespaceSeparator;
     }
 
     public function findQueryHandlerFor(Query $query): QueryHandler
     {
-        $serviceNameComputer = new ServiceNameComputer('Domain\Queries');
+        $serviceNameComputer = new ServiceNameComputer($this->namespaceSeparator);
 
         $serviceNameWithoutPrefix = $serviceNameComputer->compute(get_class($query));
         $queryHandlerKeyInContainer = self::QUERY_HANDLER_PREFIX . '.' . $serviceNameWithoutPrefix;
