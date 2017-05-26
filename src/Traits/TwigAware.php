@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Onyx\Traits;
 
 use Symfony\Component\HttpFoundation\Response;
+use Onyx\Services\CQS\QueryResult;
 
 trait TwigAware
 {
@@ -22,6 +23,15 @@ trait TwigAware
     {
         return new Response(
             $this->twig->render($template, $context)
+        );
+    }
+
+    private function renderResult($template, QueryResult $result): Response
+    {
+        return new Response(
+            $this->twig->render($template, [
+                'result' => $result,
+            ])
         );
     }
 }
