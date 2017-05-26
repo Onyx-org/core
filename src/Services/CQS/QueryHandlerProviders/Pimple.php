@@ -38,6 +38,13 @@ class Pimple implements QueryHandlerProvider
             throw new \LogicException(sprintf('the service "%s" does not exist in container', $queryHandlerKeyInContainer));
         }
 
-        return $this->container[$queryHandlerKeyInContainer];
+        $queryHandler = $this->container[$queryHandlerKeyInContainer];
+
+        if(! $queryHandler instanceof QueryHandler)
+        {
+            throw new \UnexpectedValueException(sprintf('The query handler "%s" does not implements QueryHandler', get_class($queryHandler)));
+        }
+
+        return $queryHandler;
     }
 }
