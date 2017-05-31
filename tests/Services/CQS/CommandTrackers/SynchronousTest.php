@@ -33,7 +33,7 @@ class SynchronousTest extends TestCase
     }
 
     /**
-     * @expectedException \Exception
+     * @expectedException \RuntimeException
      */
     public function testRetrieveUnknownTrackedData()
     {
