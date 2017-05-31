@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Onyx\Services\CQS\CommandBuses;
 
+use Onyx\Domain\Commands\NullCommand;
 use Onyx\Services\CQS\Command;
 use Onyx\Services\CQS\CommandHandler;
 use Onyx\Services\CQS\CommandHandlerProvider;
@@ -21,7 +22,7 @@ class SynchronousTest extends TestCase
 
         $synchronousBus = new Synchronous($commandHandlerProvider);
 
-        $synchronousBus->send($this->buildCommand());
+        $synchronousBus->send(new NullCommand);
     }
 
     public function testSend()
@@ -31,14 +32,9 @@ class SynchronousTest extends TestCase
 
         $synchronousBus = new Synchronous($commandHandlerProvider);
 
-        $synchronousBus->send($this->buildCommand());
+        $synchronousBus->send(new NullCommand);
 
         $this->assertSame(1, $commandHandler->callCount);
-    }
-
-    private function buildCommand()
-    {
-        return new Class implements Command {};
     }
 
     private function buildCommandHandlerProvider(CommandHandler $commandHandler)
