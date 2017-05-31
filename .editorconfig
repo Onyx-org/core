@@ -1,0 +1,39 @@
+# Universal parameters :
+# root [true|false] : define this file as the only file to be used by your editor
+# indent_style [tab|space] : define the style of indentation (tabs or spaces)
+# indent_size [int] : define the size of indentation in columns (used with indent_style = space)
+# tab_width [int] : define the size of indentation in columns (used with indent_style = tab)
+# end_of_line [crlf|lf] : define the end of line symbol (Carriage Return Line Feed or Line Feed)
+# charset : define the default file charset
+# trim_trailing_whitespace [true|false] : if true, remove whitespaces at end of line
+# insert_final_newline [true|false] : if true, insert a blank line at the end of file
+# max_line_length [int] : define a max line length in number of characters (ONLY USABLE WITH VIM AND EMACS)
+#
+# Domain specific parameters :
+# quote_type [single|double|auto] : set the type of quote to be used on literal strings (available on multiple quote styles languages)
+# spaces_around_brackets [none|inside|outside|both] : put spaces around bracket (both), before bracket (outside), after bracket (inside)
+# spaces_around_operators [true|false|hybrid] : if true, put spaces around operators
+#
+# For further informations, see https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Propertie
+
+root = true
+
+[*]
+indent_style = space
+indent_size = 4
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.{php, js}]
+quote_type = single
+
+[Makefile]
+indent_style = tab
+
+[*.mk]
+indent_style = tab
