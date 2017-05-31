@@ -44,7 +44,10 @@ class PimpleTest extends TestCase
         $commandHandler = $pimpleCommandHandlerProvider->findCommandHandlerFor(new NullCommand());
     }
 
-    public function testFindCommandHandlerFor()
+    /**
+     * @dataProvider providerTestFindCommandHandlerFor
+     */
+    public function testFindCommandHandlerFor(Command $command, string $handlerServiceKey, ?string $namespaceSeparator)
     {
         $container = new Container();
 
@@ -55,14 +58,38 @@ class PimpleTest extends TestCase
             {}
         };
 
-        $container['command.handlers.nullcommand'] = function() use($expectedCommandHandler){
+        $container[$handlerServiceKey] = function() use($expectedCommandHandler){
             return $expectedCommandHandler;
         };
 
         $pimpleCommandHandlerProvider = new Pimple($container);
+        if(! empty($namespaceSeparator))
+        {
+            $pimpleCommandHandlerProvider = new Pimple($container, $namespaceSeparator);
+        }
 
-        $commandHandler = $pimpleCommandHandlerProvider->findCommandHandlerFor(new NullCommand());
+        $commandHandler = $pimpleCommandHandlerProvider->findCommandHandlerFor($command);
 
         $this->assertSame($expectedCommandHandler, $commandHandler);
     }
+
+    public function providerTestFindCommandHandlerFor()
+    {
+        return [
+            'Default namespace separator' => [
+                'command' => new NullCommand(),
+                'Handler service key in container' => 'command.handlers.nullcommand',
+                'namespace separator' => null,
+            ],
+            'Custom namespace separator' => [
+                'command' => new NonDefaultNamespaceCommand(),
+                'Handler service key in container' => 'command.handlers.nondefaultnamespacecommand',
+                'namespace separator' => 'CommandHandlerProviders',
+            ],
+        ];
+    }
+}
+
+class NonDefaultNamespaceCommand implements Command
+{
 }
