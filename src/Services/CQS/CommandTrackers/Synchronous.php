@@ -30,7 +30,7 @@ class Synchronous implements CommandTracker
     {
         if(! array_key_exists($trackingId, $this->trackings))
         {
-            throw new \Exception(sprintf('Tracking id "%s" not found in command tracker', $trackingId));
+            throw new \RuntimeException(sprintf('Tracking id "%s" not found in command tracker', $trackingId));
         }
 
         return $this->trackings[$trackingId];
