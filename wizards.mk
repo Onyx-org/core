@@ -84,3 +84,23 @@ wizard-new-query: .onyx
 	@echo ""
 	@echo "Don't forget to build your query in your provider"
 	@echo ""
+
+wizard-new-command: .onyx
+	$(eval COMMAND_NAME := $(shell bash -c 'read -p "Enter your command name : " commandName; echo $$commandName'))
+	$(eval PARENT_TARGET_DIR := "src/Domain/Commands")
+	$(eval TARGET_DIR := "${PARENT_TARGET_DIR}/${COMMAND_NAME}")
+	# Create directories
+	@mkdir -p ${PARENT_TARGET_DIR}
+	# Copy files
+	@cp -rf vendor/onyx/core/wizards/command/* ${PARENT_TARGET_DIR}
+	# Rename files
+	@mv ${PARENT_TARGET_DIR}/__ONYX_CommandName ${TARGET_DIR}
+	@mv ${TARGET_DIR}/__ONYX_CommandNameCommand.php ${TARGET_DIR}/${COMMAND_NAME}Command.php
+	# Replace placeholders in code
+	@find ${TARGET_DIR} -type f -exec sed -i 's/__ONYX_CommandName/${COMMAND_NAME}/g' {} \;
+	@find ${TARGET_DIR} -type f -exec sed -i 's/__ONYX_Namespace/$(call convert-namespace,$(NAMESPACE))/g' {} \;
+	# Done
+	@echo "Command created !"
+	@echo ""
+	@echo "Don't forget to build your command in your provider"
+	@echo ""
