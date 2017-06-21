@@ -42,3 +42,25 @@ wizard-new-controller: .onyx
 	@echo ""
 	@echo "$$ this->mount('/', new Controllers\\\\${CONTROLLER_NAME}\Provider());"
 	@echo ""
+
+wizard-new-repository: .onyx
+	$(eval REPOSITORY_NAME := $(shell bash -c 'read -p "Enter your repository name : " repositoryName; echo $$repositoryName'))
+	$(eval TARGET_DIR := "src/Persistence")
+	# Create directories
+	@mkdir -p ${TARGET_DIR}/Repositories
+	@mkdir -p src/Domain
+	@mkdir -p ${TARGET_DIR}/DataTransferObjects
+	# Copy files
+	@cp -rf vendor/onyx/core/wizards/repository/* ${TARGET_DIR}
+	# Rename files
+	@mv ${TARGET_DIR}/__ONYX_RepositoryNameRepository.php ${TARGET_DIR}/${REPOSITORY_NAME}Repository.php
+	@mv ${TARGET_DIR}/Repositories/__ONYX_RepositoryName.php ${TARGET_DIR}/Repositories/${REPOSITORY_NAME}.php
+	@mv ${TARGET_DIR}/DataTransferObjects/__ONYX_RepositoryName.php ${TARGET_DIR}/DataTransferObjects/${REPOSITORY_NAME}.php
+	# Replace placeholders in code
+	@find ${TARGET_DIR} -type f -exec sed -i 's/__ONYX_RepositoryName/${REPOSITORY_NAME}/g' {} \;
+	@find ${TARGET_DIR} -type f -exec sed -i 's/__ONYX_Namespace/$(call convert-namespace,$(NAMESPACE))/g' {} \;
+	# Done
+	@echo "Repository created !"
+	@echo ""
+	@echo "Don't forget to build your repository in your provider"
+	@echo ""
