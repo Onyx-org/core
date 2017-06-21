@@ -64,3 +64,23 @@ wizard-new-repository: .onyx
 	@echo ""
 	@echo "Don't forget to build your repository in your provider"
 	@echo ""
+
+wizard-new-query: .onyx
+	$(eval QUERY_NAME := $(shell bash -c 'read -p "Enter your query name : " queryName; echo $$queryName'))
+	$(eval PARENT_TARGET_DIR := "src/Domain/Queries")
+	$(eval TARGET_DIR := "${PARENT_TARGET_DIR}/${QUERY_NAME}")
+	# Create directories
+	@mkdir -p ${PARENT_TARGET_DIR}
+	# Copy files
+	@cp -rf vendor/onyx/core/wizards/query/* ${PARENT_TARGET_DIR}
+	# Rename files
+	@mv ${PARENT_TARGET_DIR}/__ONYX_QueryName ${TARGET_DIR}
+	@mv ${TARGET_DIR}/__ONYX_QueryNameQuery.php ${TARGET_DIR}/${QUERY_NAME}Query.php
+	# Replace placeholders in code
+	@find ${TARGET_DIR} -type f -exec sed -i 's/__ONYX_QueryName/${QUERY_NAME}/g' {} \;
+	@find ${TARGET_DIR} -type f -exec sed -i 's/__ONYX_Namespace/$(call convert-namespace,$(NAMESPACE))/g' {} \;
+	# Done
+	@echo "Query created !"
+	@echo ""
+	@echo "Don't forget to build your query in your provider"
+	@echo ""
