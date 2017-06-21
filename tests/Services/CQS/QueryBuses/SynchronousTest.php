@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Onyx\Services\CQS\QueryBuses;
 
+use Onyx\Domain\Queries\NullQuery;
 use Onyx\Services\CQS\Query;
 use Onyx\Services\CQS\QueryResult;
 use Onyx\Services\CQS\QueryHandler;
@@ -22,7 +23,7 @@ class SynchronousTest extends TestCase
 
         $synchronousBus = new Synchronous($queryHandlerProvider);
 
-        $synchronousBus->send($this->buildQuery());
+        $synchronousBus->send(new NullQuery());
     }
 
     public function testSend()
@@ -32,14 +33,9 @@ class SynchronousTest extends TestCase
 
         $synchronousBus = new Synchronous($queryHandlerProvider);
 
-        $synchronousBus->send($this->buildQuery());
+        $synchronousBus->send(new NullQuery());
 
         $this->assertSame(1, $queryHandler->callCount);
-    }
-
-    private function buildQuery()
-    {
-        return new Class implements Query {};
     }
 
     private function buildQueryHandlerProvider(QueryHandler $queryHandler)
