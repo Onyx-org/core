@@ -42,3 +42,65 @@ wizard-new-controller: .onyx
 	@echo ""
 	@echo "$$ this->mount('/', new Controllers\\\\${CONTROLLER_NAME}\Provider());"
 	@echo ""
+
+wizard-new-repository: .onyx
+	$(eval REPOSITORY_NAME := $(shell bash -c 'read -p "Enter your repository name : " repositoryName; echo $$repositoryName'))
+	$(eval TARGET_DIR := "src/Persistence")
+	# Create directories
+	@mkdir -p ${TARGET_DIR}/Repositories
+	@mkdir -p src/Domain
+	@mkdir -p ${TARGET_DIR}/DataTransferObjects
+	# Copy files
+	@cp -rf vendor/onyx/core/wizards/repository/* ${TARGET_DIR}
+	# Rename files
+	@mv ${TARGET_DIR}/__ONYX_RepositoryNameRepository.php ${TARGET_DIR}/${REPOSITORY_NAME}Repository.php
+	@mv ${TARGET_DIR}/Repositories/__ONYX_RepositoryName.php ${TARGET_DIR}/Repositories/${REPOSITORY_NAME}.php
+	@mv ${TARGET_DIR}/DataTransferObjects/__ONYX_RepositoryName.php ${TARGET_DIR}/DataTransferObjects/${REPOSITORY_NAME}.php
+	# Replace placeholders in code
+	@find ${TARGET_DIR} -type f -exec sed -i 's/__ONYX_RepositoryName/${REPOSITORY_NAME}/g' {} \;
+	@find ${TARGET_DIR} -type f -exec sed -i 's/__ONYX_Namespace/$(call convert-namespace,$(NAMESPACE))/g' {} \;
+	# Done
+	@echo "Repository created !"
+	@echo ""
+	@echo "Don't forget to build your repository in your provider"
+	@echo ""
+
+wizard-new-query: .onyx
+	$(eval QUERY_NAME := $(shell bash -c 'read -p "Enter your query name : " queryName; echo $$queryName'))
+	$(eval PARENT_TARGET_DIR := "src/Domain/Queries")
+	$(eval TARGET_DIR := "${PARENT_TARGET_DIR}/${QUERY_NAME}")
+	# Create directories
+	@mkdir -p ${PARENT_TARGET_DIR}
+	# Copy files
+	@cp -rf vendor/onyx/core/wizards/query/* ${PARENT_TARGET_DIR}
+	# Rename files
+	@mv ${PARENT_TARGET_DIR}/__ONYX_QueryName ${TARGET_DIR}
+	@mv ${TARGET_DIR}/__ONYX_QueryNameQuery.php ${TARGET_DIR}/${QUERY_NAME}Query.php
+	# Replace placeholders in code
+	@find ${TARGET_DIR} -type f -exec sed -i 's/__ONYX_QueryName/${QUERY_NAME}/g' {} \;
+	@find ${TARGET_DIR} -type f -exec sed -i 's/__ONYX_Namespace/$(call convert-namespace,$(NAMESPACE))/g' {} \;
+	# Done
+	@echo "Query created !"
+	@echo ""
+	@echo "Don't forget to build your query in your provider"
+	@echo ""
+
+wizard-new-command: .onyx
+	$(eval COMMAND_NAME := $(shell bash -c 'read -p "Enter your command name : " commandName; echo $$commandName'))
+	$(eval PARENT_TARGET_DIR := "src/Domain/Commands")
+	$(eval TARGET_DIR := "${PARENT_TARGET_DIR}/${COMMAND_NAME}")
+	# Create directories
+	@mkdir -p ${PARENT_TARGET_DIR}
+	# Copy files
+	@cp -rf vendor/onyx/core/wizards/command/* ${PARENT_TARGET_DIR}
+	# Rename files
+	@mv ${PARENT_TARGET_DIR}/__ONYX_CommandName ${TARGET_DIR}
+	@mv ${TARGET_DIR}/__ONYX_CommandNameCommand.php ${TARGET_DIR}/${COMMAND_NAME}Command.php
+	# Replace placeholders in code
+	@find ${TARGET_DIR} -type f -exec sed -i 's/__ONYX_CommandName/${COMMAND_NAME}/g' {} \;
+	@find ${TARGET_DIR} -type f -exec sed -i 's/__ONYX_Namespace/$(call convert-namespace,$(NAMESPACE))/g' {} \;
+	# Done
+	@echo "Command created !"
+	@echo ""
+	@echo "Don't forget to build your command in your provider"
+	@echo ""
