@@ -42,4 +42,12 @@ interface Plugin
      * @return iterable
      */
     public function getProviders(): iterable;
+
+
+    /**
+     * Will be loaded when loadConsole method of plugin manager will be called
+     *
+     * @return iterable
+     */
+    public function getConsoleCommands(): iterable;
 }

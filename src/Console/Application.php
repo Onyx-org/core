@@ -2,7 +2,11 @@
 
 namespace Onyx\Console;
 
-class Application extends \Symfony\Component\Console\Application
+use Onyx\CommandContainer;
+use Onyx\PluginManager;
+use Pimple\Container;
+
+class Application extends \Symfony\Component\Console\Application implements CommandContainer
 {
     private static $logo =
 '     __
@@ -13,8 +17,20 @@ class Application extends \Symfony\Component\Console\Application
 
 ';
 
+    public function __construct(Container $container, $name = 'UNKNOWN', $version = 'UNKNOWN')
+    {
+        parent::__construct($name, $version);
+
+        $this->initializeConsolePlugins($container);
+    }
+
     public function getHelp()
     {
         return self::$logo . parent::getHelp();
+    }
+
+    private function initializeConsolePlugins(Container $container): void
+    {
+        $container['plugin.manager']->loadConsole($this);
     }
 }

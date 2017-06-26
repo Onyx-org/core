@@ -8,6 +8,9 @@ use Pimple\ServiceProviderInterface;
 use Onyx\Plugins\AbstractPlugin;
 use Puzzle\Configuration;
 use Puzzle\Configuration\Stacked;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Pimple\Container;
 
 class Pony extends AbstractPlugin
@@ -28,6 +31,18 @@ class Pony extends AbstractPlugin
             new class implements ServiceProviderInterface {
                 public function register(Container $pimple){}
             }
+        ];
+    }
+
+    public function getConsoleCommands(): iterable
+    {
+        return [
+                function(ServiceContainer $c) {
+                return new class extends Command {
+                    protected function configure() { $this->setName('command-pony'); }
+                    protected function execute(InputInterface $input, OutputInterface $output){}
+                };
+            },
         ];
     }
 }
@@ -52,6 +67,53 @@ class Unicorn extends AbstractPlugin
             }
         ];
     }
+
+    public function getConsoleCommands(): iterable
+    {
+        return [
+            function(ServiceContainer $c) {
+                return new class extends Command {
+                    protected function configure() { $this->setName('command-unicorn-one'); }
+                    protected function execute(InputInterface $input, OutputInterface $output){}
+                };
+            },
+            function(ServiceContainer $c) {
+                return new class extends Command {
+                    protected function configure() { $this->setName('command-unicorn-two'); }
+                    protected function execute(InputInterface $input, OutputInterface $output){}
+                };
+            },
+        ];
+    }
+}
+
+class EvilPony extends AbstractPlugin
+{
+    public function getName(): string { return "EvilPony"; }
+
+    public function getConsoleCommands(): iterable
+    {
+        return [
+            new class extends Command {
+                protected function configure() { $this->setName('command-unicorn-one'); }
+                protected function execute(InputInterface $input, OutputInterface $output){}
+            },
+        ];
+    }
+}
+
+class EvilUnicorn extends AbstractPlugin
+{
+    public function getName(): string { return "EvilUnicorn"; }
+
+    public function getConsoleCommands(): iterable
+    {
+        return [
+            function(ServiceContainer $c) {
+                return new \DateTime();
+            },
+        ];
+    }
 }
 
 class PluginManagerTest extends TestCase
@@ -60,7 +122,8 @@ class PluginManagerTest extends TestCase
         $configuration,
         $stackedConfiguration,
         $viewManager,
-        $serviceContainer;
+        $serviceContainer,
+        $commandContainer;
 
     protected function setUp()
     {
@@ -94,6 +157,13 @@ class PluginManagerTest extends TestCase
             }
         };
 
+        $this->commandContainer = new class implements CommandContainer {
+            public $count = 0;
+            public function add(Command $command)
+            {
+                $this->count++;
+            }
+        };
     }
 
     public function testLoad()
@@ -138,5 +208,39 @@ class PluginManagerTest extends TestCase
 
         $manager = new PluginManager($configuration, $this->viewManager, $this->serviceContainer);
         $manager->load();
+    }
+
+    public function testLoadConsole()
+    {
+        $manager = new PluginManager($this->configuration, $this->viewManager, $this->serviceContainer);
+        $manager->loadConsole($this->commandContainer);
+
+        $this->assertSame(3, $this->commandContainer->count);
+    }
+
+    /**
+     * @expectedException \LogicException
+     * @dataProvider providerTestLoadConsoleWithInvalidCommandsDefinitions
+     */
+    public function testLoadConsoleWithInvalidCommandsDefinitions(Configuration $configuration)
+    {
+        $manager = new PluginManager($configuration, $this->viewManager, $this->serviceContainer);
+        $manager->loadConsole($this->commandContainer);
+    }
+
+    public function providerTestLoadConsoleWithInvalidCommandsDefinitions()
+    {
+        return array(
+            "Plugin not returning closures for commands definitions" => [
+                new Memory([
+                    'plugins/enabled' => [ 'Onyx\EvilPony' ],
+                ]),
+            ],
+            "Plugin command definition not returning Command instance " => [
+                new Memory([
+                    'plugins/enabled' => [ 'Onyx\EvilUnicorn' ],
+                ]),
+            ],
+        );
     }
 }

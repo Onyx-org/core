@@ -28,4 +28,9 @@ abstract class AbstractPlugin implements Plugin
     {
         return [];
     }
+
+    public function getConsoleCommands(): iterable
+    {
+        return [];
+    }
 }
