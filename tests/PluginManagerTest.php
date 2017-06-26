@@ -37,7 +37,7 @@ class Pony extends AbstractPlugin
     public function getConsoleCommands(): iterable
     {
         return [
-                function(ServiceContainer $c) {
+            function(ServiceContainer $c) {
                 return new class extends Command {
                     protected function configure() { $this->setName('command-pony'); }
                     protected function execute(InputInterface $input, OutputInterface $output){}
