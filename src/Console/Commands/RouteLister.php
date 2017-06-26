@@ -7,13 +7,14 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Onyx\Services\Routes\Retriever;
 
 class RouteLister extends Command
 {
     private
         $routeRetriever;
 
-    public function __construct(Routes\Retriever $routeRetriever)
+    public function __construct(Retriever $routeRetriever)
     {
         parent::__construct();
 
@@ -44,8 +45,8 @@ class RouteLister extends Command
         foreach($routes as $route)
         {
             $table->addRow([
-                implode('|', $route->getMethods()),
                 implode(', ', $route->getSchemes()),
+                implode('|', $route->getMethods()),
                 $route->getPath(),
                 $this->renderRequirements($route),
             ]);
