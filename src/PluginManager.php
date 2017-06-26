@@ -184,7 +184,7 @@ class PluginManager implements LoggerAwareInterface
         }
     }
 
-    private function loadConsoleCommands(CommandContainer $commandContainer, Plugin $plugin)
+    private function loadConsoleCommands(CommandContainer $commandContainer, Plugin $plugin): void
     {
         foreach($plugin->getConsoleCommands() as $commandDefinition)
         {
