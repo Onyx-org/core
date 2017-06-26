@@ -62,7 +62,7 @@ wizard-new-repository: .onyx
 	# Done
 	@echo "Repository created !"
 	@echo ""
-	@echo "Don't forget to build your repository in your provider"
+	@echo "Don't forget to build your repository in your container"
 	@echo ""
 
 wizard-new-query: .onyx
@@ -82,7 +82,7 @@ wizard-new-query: .onyx
 	# Done
 	@echo "Query created !"
 	@echo ""
-	@echo "Don't forget to build your query in your provider"
+	@echo "Don't forget to build your query handler in your container"
 	@echo ""
 
 wizard-new-command: .onyx
@@ -102,5 +102,5 @@ wizard-new-command: .onyx
 	# Done
 	@echo "Command created !"
 	@echo ""
-	@echo "Don't forget to build your command in your provider"
+	@echo "Don't forget to build your command handler in your container"
 	@echo ""
