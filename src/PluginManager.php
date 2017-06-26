@@ -10,6 +10,7 @@ use Pimple\ServiceProviderInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use Psr\Log\LoggerAwareInterface;
+use Symfony\Component\Console\Command\Command;
 
 class PluginManager implements LoggerAwareInterface
 {
@@ -171,5 +172,35 @@ class PluginManager implements LoggerAwareInterface
         $this->logger->error("Plugin $pluginName was not enabled");
 
         return null;
+    }
+
+    public function loadConsole(CommandContainer $commandContainer): void
+    {
+        $plugins = $this->retrievePlugins();
+
+        foreach($plugins as $plugin)
+        {
+            $this->loadConsoleCommands($commandContainer, $plugin);
+        }
+    }
+
+    private function loadConsoleCommands(CommandContainer $commandContainer, Plugin $plugin)
+    {
+        foreach($plugin->getConsoleCommands() as $commandDefinition)
+        {
+            if(! $commandDefinition instanceof \Closure)
+            {
+                throw new \LogicException("Plugin has to return closures when getConsoleCommands is called");
+            }
+
+            $command = $commandDefinition($this->serviceContainer);
+
+            if(! $command instanceof Command)
+            {
+                throw new \LogicException("Command definition closure has to return Command instance");
+            }
+
+            $commandContainer->add($command);
+        }
     }
 }
