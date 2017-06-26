@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Onyx\Console\Commands\Routes;
+namespace Onyx\Services\Routes;
 
 interface Retriever
 {
