@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace __ONYX_Namespace\Domain\Queries\__ONYX_QueryName;
+namespace __ONYX_Namespace\Domain\Queries\__ONYX_QueryNamespace;
 
 use Onyx\Services\CQS\Query;
 

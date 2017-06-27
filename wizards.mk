@@ -6,6 +6,8 @@ include .onyx
 	$(error .onyx file is missing)
 
 convert-namespace = $(subst ::,\\,$1)
+convert-path-into-namespace = $(subst /,\\,$1)
+extract-last-dir = $(lastword $(subst /, ,$1))
 
 wizard-set-namespace: core-wizard-set-namespace composer-dumpautoload
 
@@ -66,17 +68,17 @@ wizard-new-repository: .onyx
 	@echo ""
 
 wizard-new-query: .onyx
-	$(eval QUERY_NAME := $(shell bash -c 'read -p "Enter your query name : " queryName; echo $$queryName'))
-	$(eval PARENT_TARGET_DIR := "src/Domain/Queries")
-	$(eval TARGET_DIR := "${PARENT_TARGET_DIR}/${QUERY_NAME}")
+	$(eval QUERY_FULL_PATH := $(shell bash -c 'read -p "Enter your query name [ex: Pony/Dimensions] : " queryName; echo $$queryName'))
+	$(eval QUERY_NAME := $(call extract-last-dir,${QUERY_FULL_PATH}))
+	$(eval TARGET_DIR := "src/Domain/Queries/${QUERY_FULL_PATH}")
 	# Create directories
-	@mkdir -p ${PARENT_TARGET_DIR}
+	@mkdir -p ${TARGET_DIR}
 	# Copy files
-	@cp -rf vendor/onyx/core/wizards/query/* ${PARENT_TARGET_DIR}
+	@cp -rf vendor/onyx/core/wizards/query/* ${TARGET_DIR}
 	# Rename files
-	@mv ${PARENT_TARGET_DIR}/__ONYX_QueryName ${TARGET_DIR}
 	@mv ${TARGET_DIR}/__ONYX_QueryNameQuery.php ${TARGET_DIR}/${QUERY_NAME}Query.php
 	# Replace placeholders in code
+	@find ${TARGET_DIR} -type f -exec sed -i 's,__ONYX_QueryNamespace,$(call convert-path-into-namespace,${QUERY_FULL_PATH}),g' {} \;
 	@find ${TARGET_DIR} -type f -exec sed -i 's/__ONYX_QueryName/${QUERY_NAME}/g' {} \;
 	@find ${TARGET_DIR} -type f -exec sed -i 's/__ONYX_Namespace/$(call convert-namespace,$(NAMESPACE))/g' {} \;
 	# Done
@@ -86,17 +88,17 @@ wizard-new-query: .onyx
 	@echo ""
 
 wizard-new-command: .onyx
-	$(eval COMMAND_NAME := $(shell bash -c 'read -p "Enter your command name : " commandName; echo $$commandName'))
-	$(eval PARENT_TARGET_DIR := "src/Domain/Commands")
-	$(eval TARGET_DIR := "${PARENT_TARGET_DIR}/${COMMAND_NAME}")
+	$(eval COMMAND_FULL_PATH := $(shell bash -c 'read -p "Enter your command name [ex: Pony/Mount] : " commandName; echo $$commandName'))
+	$(eval COMMAND_NAME := $(call extract-last-dir,${COMMAND_FULL_PATH}))
+	$(eval TARGET_DIR := "src/Domain/Commands/${COMMAND_FULL_PATH}")
 	# Create directories
-	@mkdir -p ${PARENT_TARGET_DIR}
+	@mkdir -p ${TARGET_DIR}
 	# Copy files
-	@cp -rf vendor/onyx/core/wizards/command/* ${PARENT_TARGET_DIR}
+	@cp -rf vendor/onyx/core/wizards/command/* ${TARGET_DIR}
 	# Rename files
-	@mv ${PARENT_TARGET_DIR}/__ONYX_CommandName ${TARGET_DIR}
 	@mv ${TARGET_DIR}/__ONYX_CommandNameCommand.php ${TARGET_DIR}/${COMMAND_NAME}Command.php
 	# Replace placeholders in code
+	@find ${TARGET_DIR} -type f -exec sed -i 's,__ONYX_CommandNamespace,$(call convert-path-into-namespace,${COMMAND_FULL_PATH}),g' {} \;
 	@find ${TARGET_DIR} -type f -exec sed -i 's/__ONYX_CommandName/${COMMAND_NAME}/g' {} \;
 	@find ${TARGET_DIR} -type f -exec sed -i 's/__ONYX_Namespace/$(call convert-namespace,$(NAMESPACE))/g' {} \;
 	# Done
