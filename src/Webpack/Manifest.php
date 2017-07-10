@@ -36,7 +36,7 @@ class Manifest
         $this->files = $manifest;
     }
 
-    public function getChunkManifest(): string
+    public function getChunkManifest(): ?string
     {
         return $this->chunkManifest;
     }
