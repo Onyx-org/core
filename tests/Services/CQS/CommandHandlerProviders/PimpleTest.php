@@ -17,13 +17,8 @@ class PimpleTest extends TestCase
      */
     public function testNoHandlerFoundException()
     {
-        $container = new Container();
-
-        $pimpleCommandHandlerProvider = new Pimple($container);
-
-        $command = new NullCommand();
-
-        $pimpleCommandHandlerProvider->findCommandHandlerFor($command);
+        $provider = new Pimple(new Container());
+        $provider->findCommandHandlerFor(new NullCommand());
     }
 
     /**
@@ -31,17 +26,14 @@ class PimpleTest extends TestCase
      */
     public function testBadHandlerTypeException()
     {
-        $container = new Container();
+        $expectedHandler = new class {};
 
-        $expectedCommandHandler = new class {};
+        $container = new Container([
+            'command.handlers.nullcommand' => $expectedHandler,
+        ]);
 
-        $container['command.handlers.nullcommand'] = function() use($expectedCommandHandler){
-            return $expectedCommandHandler;
-        };
-
-        $pimpleCommandHandlerProvider = new Pimple($container);
-
-        $commandHandler = $pimpleCommandHandlerProvider->findCommandHandlerFor(new NullCommand());
+        $provider = new Pimple($container);
+        $provider->findCommandHandlerFor(new NullCommand());
     }
 
     /**
@@ -49,28 +41,24 @@ class PimpleTest extends TestCase
      */
     public function testFindCommandHandlerFor(Command $command, string $handlerServiceKey, ?string $namespaceSeparator)
     {
-        $container = new Container();
-
-        $expectedCommandHandler = new class implements CommandHandler {
-            public function accept(Command $command): bool
-            {}
-            public function handle(Command $command): void
-            {}
+        $expectedHandler = new class implements CommandHandler {
+            public function accept(Command $command): bool {}
+            public function handle(Command $command): void {}
         };
 
-        $container[$handlerServiceKey] = function() use($expectedCommandHandler){
-            return $expectedCommandHandler;
-        };
+        $container = new Container([
+            $handlerServiceKey => $expectedHandler,
+        ]);
 
-        $pimpleCommandHandlerProvider = new Pimple($container);
+        $provider = new Pimple($container);
         if(! empty($namespaceSeparator))
         {
-            $pimpleCommandHandlerProvider = new Pimple($container, $namespaceSeparator);
+            $provider = new Pimple($container, $namespaceSeparator);
         }
 
-        $commandHandler = $pimpleCommandHandlerProvider->findCommandHandlerFor($command);
+        $handler = $provider->findCommandHandlerFor($command);
 
-        $this->assertSame($expectedCommandHandler, $commandHandler);
+        $this->assertSame($expectedHandler, $handler);
     }
 
     public function providerTestFindCommandHandlerFor()

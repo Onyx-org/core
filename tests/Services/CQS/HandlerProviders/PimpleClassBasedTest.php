@@ -31,9 +31,7 @@ class PimpleClassBasedTest extends TestCase
     public function testWrongQueryHandlerTypeException()
     {
         $container = new Container([
-            NullQuery::class => function(){
-                return new \stdClass();
-            },
+            NullQuery::class => new \stdClass(),
         ]);
 
         $provider = new PimpleClassBased($container);
@@ -47,10 +45,9 @@ class PimpleClassBasedTest extends TestCase
             public function handle(Query $query): QueryResult {}
         };
 
-        $container = new Container();
-        $container[NullQuery::class] = function() use($expectedHandler){
-            return $expectedHandler;
-        };
+        $container = new Container([
+            NullQuery::class => $expectedHandler,
+        ]);
 
         $provider = new PimpleClassBased($container);
         $handler = $provider->findQueryHandlerFor(new NullQuery());
@@ -72,9 +69,7 @@ class PimpleClassBasedTest extends TestCase
     public function testWrongCommandHandlerTypeException()
     {
         $container = new Container([
-            NullCommand::class => function(){
-                return new \stdClass();
-            },
+            NullCommand::class => new \stdClass(),
         ]);
 
         $provider = new PimpleClassBased($container);
@@ -88,10 +83,9 @@ class PimpleClassBasedTest extends TestCase
             public function handle(Command $command): void {}
         };
 
-        $container = new Container();
-        $container[NullCommand::class] = function() use($expectedHandler){
-            return $expectedHandler;
-        };
+        $container = new Container([
+            NullCommand::class => $expectedHandler,
+        ]);
 
         $provider = new PimpleClassBased($container);
         $handler = $provider->findCommandHandlerFor(new NullCommand());

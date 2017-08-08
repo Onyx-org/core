@@ -18,13 +18,8 @@ class PimpleTest extends TestCase
      */
     public function testNoHandlerFoundException()
     {
-        $container = new Container();
-
-        $pimpleQueryHandlerProvider = new Pimple($container);
-
-        $query = new NullQuery();
-
-        $pimpleQueryHandlerProvider->findQueryHandlerFor($query);
+        $provider = new Pimple(new Container());
+        $provider->findQueryHandlerFor(new NullQuery());
     }
 
     /**
@@ -32,38 +27,30 @@ class PimpleTest extends TestCase
      */
     public function testBadHandlerTypeException()
     {
-        $container = new Container();
+        $expectedHandler = new class {};
 
-        $expectedQueryHandler = new class {};
+        $container = new Container([
+            'query.handlers.nullquery' => $expectedHandler,
+        ]);
 
-        $container['query.handlers.nullquery'] = function() use($expectedQueryHandler){
-            return $expectedQueryHandler;
-        };
-
-        $pimpleQueryHandlerProvider = new Pimple($container);
-
-        $queryHandler = $pimpleQueryHandlerProvider->findQueryHandlerFor(new NullQuery());
+        $provider = new Pimple($container);
+        $provider->findQueryHandlerFor(new NullQuery());
     }
 
     public function testFindQueryHandlerFor()
     {
-        $container = new Container();
-
-        $expectedQueryHandler = new class implements QueryHandler {
-            public function accept(Query $query): bool
-            {}
-            public function handle(Query $query): QueryResult
-            {}
+        $expectedHandler = new class implements QueryHandler {
+            public function accept(Query $query): bool {}
+            public function handle(Query $query): QueryResult {}
         };
 
-        $container['query.handlers.nullquery'] = function() use($expectedQueryHandler){
-            return $expectedQueryHandler;
-        };
+        $container = new Container([
+            'query.handlers.nullquery' => $expectedHandler,
+        ]);
 
-        $pimpleQueryHandlerProvider = new Pimple($container);
+        $provider = new Pimple($container);
+        $handler = $provider->findQueryHandlerFor(new NullQuery());
 
-        $queryHandler = $pimpleQueryHandlerProvider->findQueryHandlerFor(new NullQuery());
-
-        $this->assertSame($expectedQueryHandler, $queryHandler);
+        $this->assertSame($expectedHandler, $handler);
     }
 }

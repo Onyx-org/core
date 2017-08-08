@@ -16,15 +16,15 @@ class ServiceNameComputer
 
     public function compute(string $namespace)
     {
-        $queryRelativeNamespace = $this->computeQueryRelativeNamespace($namespace);
+        $relativeNamespace = $this->computeRelativeNamespace($namespace);
 
-        $queryHandlerKey = strtolower($queryRelativeNamespace);
-        $queryHandlerKey = ltrim($queryHandlerKey, '\\');
+        $handlerKey = strtolower($relativeNamespace);
+        $handlerKey = ltrim($handlerKey, '\\');
 
-        return str_replace('\\', '_', $queryHandlerKey);
+        return str_replace('\\', '_', $handlerKey);
     }
 
-    private function computeQueryRelativeNamespace(string $namespace)
+    private function computeRelativeNamespace(string $namespace)
     {
         $queryNamespaceParts = explode($this->namespaceSeparator, $namespace);
 
@@ -33,6 +33,6 @@ class ServiceNameComputer
             return $queryNamespaceParts[1];
         }
 
-        throw new \RuntimeException('Could not compute query relative namespace for query handler key');
+        throw new \RuntimeException("Could not compute relative namespace for handler key ($namespace)");
     }
 }

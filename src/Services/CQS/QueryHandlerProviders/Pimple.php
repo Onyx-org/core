@@ -42,7 +42,7 @@ class Pimple implements QueryHandlerProvider
 
         if(! $queryHandler instanceof QueryHandler)
         {
-            throw new \UnexpectedValueException(sprintf('The query handler "%s" does not implements QueryHandler', get_class($queryHandler)));
+            throw new \UnexpectedValueException(sprintf('The query handler "%s" does not implement QueryHandler', get_class($queryHandler)));
         }
 
         return $queryHandler;

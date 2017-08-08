@@ -42,7 +42,7 @@ class Pimple implements CommandHandlerProvider
 
         if(! $commandHandler instanceof CommandHandler)
         {
-            throw new \UnexpectedValueException(sprintf('The command handler "%s" does not implements CommandHandler', get_class($commandHandler)));
+            throw new \UnexpectedValueException(sprintf('The command handler "%s" does not implement CommandHandler', get_class($commandHandler)));
         }
 
         return $commandHandler;
