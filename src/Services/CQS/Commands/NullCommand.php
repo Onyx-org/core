@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Onyx\Domain\Commands;
+namespace Onyx\Services\CQS\Commands;
 
 use Onyx\Services\CQS\Command;
 

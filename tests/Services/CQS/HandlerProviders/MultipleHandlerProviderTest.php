@@ -6,13 +6,13 @@ namespace Onyx\Services\CQS\HandlerProviders;
 
 use PHPUnit\Framework\TestCase;
 use Pimple\Container;
-use Onyx\Domain\Queries\NullQuery;
+use Onyx\Services\CQS\Queries\NullQuery;
 use Onyx\Services\CQS\QueryHandler;
 use Onyx\Services\CQS\Query;
 use Onyx\Services\CQS\QueryResult;
 use Onyx\Services\CQS\CommandHandler;
 use Onyx\Services\CQS\Command;
-use Onyx\Domain\Commands\NullCommand;
+use Onyx\Services\CQS\Commands\NullCommand;
 
 class MultipleHandlerProviderTest extends TestCase
 {

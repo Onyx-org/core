@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Onyx\Services\CQS\CommandBuses;
 
-use Onyx\Domain\Commands\NullCommand;
+use Onyx\Services\CQS\Commands\NullCommand;
 use Onyx\Services\CQS\Command;
 use Onyx\Services\CQS\CommandHandler;
 use Onyx\Services\CQS\CommandHandlerProvider;

@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Onyx\Domain\Queries;
+namespace Onyx\Services\CQS\Queries;
 
 use Onyx\Services\CQS\Query;
 

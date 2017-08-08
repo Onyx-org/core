@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Onyx\Services\CQS\QueryBuses;
 
-use Onyx\Domain\Queries\NullQuery;
+use Onyx\Services\CQS\Queries\NullQuery;
 use Onyx\Services\CQS\Query;
 use Onyx\Services\CQS\QueryResult;
 use Onyx\Services\CQS\QueryHandler;

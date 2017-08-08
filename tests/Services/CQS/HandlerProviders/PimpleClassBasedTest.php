@@ -9,8 +9,8 @@ use Pimple\Container;
 use Onyx\Services\CQS\QueryHandler;
 use Onyx\Services\CQS\Query;
 use Onyx\Services\CQS\QueryResult;
-use Onyx\Domain\Queries\NullQuery;
-use Onyx\Domain\Commands\NullCommand;
+use Onyx\Services\CQS\Queries\NullQuery;
+use Onyx\Services\CQS\Commands\NullCommand;
 use Onyx\Services\CQS\CommandHandler;
 use Onyx\Services\CQS\Command;
 

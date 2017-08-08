@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Onyx\Services\CQS\CommandHandlerProviders;
 
-use Onyx\Domain\Commands\NullCommand;
+use Onyx\Services\CQS\Commands\NullCommand;
 use Onyx\Services\CQS\CommandHandler;
 use Onyx\Services\CQS\Command;
 use PHPUnit\Framework\TestCase;
@@ -12,12 +12,15 @@ use Pimple\Container;
 
 class PimpleTest extends TestCase
 {
+    private const
+        NAMESPACE = 'CQS\Commands';
+
     /**
      * @expectedException \LogicException
      */
     public function testNoHandlerFoundException()
     {
-        $provider = new Pimple(new Container());
+        $provider = new Pimple(new Container(), self::NAMESPACE);
         $provider->findCommandHandlerFor(new NullCommand());
     }
 
@@ -32,7 +35,7 @@ class PimpleTest extends TestCase
             'command.handlers.nullcommand' => $expectedHandler,
         ]);
 
-        $provider = new Pimple($container);
+        $provider = new Pimple($container, self::NAMESPACE);
         $provider->findCommandHandlerFor(new NullCommand());
     }
 
@@ -67,7 +70,7 @@ class PimpleTest extends TestCase
             'Default namespace separator' => [
                 'command' => new NullCommand(),
                 'Handler service key in container' => 'command.handlers.nullcommand',
-                'namespace separator' => null,
+                'namespace separator' => self::NAMESPACE,
             ],
             'Custom namespace separator' => [
                 'command' => new NonDefaultNamespaceCommand(),
