@@ -22,10 +22,5 @@
         "psr-4": {
             "Onyx\\": "src/"
         }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Onyx\\": "tests/"
-        }
     }
 }
