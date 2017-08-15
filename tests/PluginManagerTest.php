@@ -12,6 +12,8 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Pimple\Container;
+use Silex\Api\ControllerProviderInterface;
+use Silex\Application;
 
 class Pony extends AbstractPlugin
 {
@@ -32,6 +34,18 @@ class Pony extends AbstractPlugin
                 public function register(Container $pimple){}
             }
         ];
+    }
+
+    public function getControllers(): ?ControllersDeclaration
+    {
+        return new class implements ControllersDeclaration {
+            public function getMountPoints(): iterable {
+
+                $provider = new class implements ControllerProviderInterface { public function connect(Application $app) {} };
+
+                return [['/path/to/heaven', $provider]];
+            }
+        };
     }
 
     public function getConsoleCommands(): iterable
@@ -151,9 +165,14 @@ class PluginManagerTest extends TestCase
 
         $this->serviceContainer = new class implements ServiceContainer {
             public $count = 0;
+            public $mountingPoints = [];
             public function register(ServiceProviderInterface $provider, array $values = array())
             {
                 $this->count++;
+            }
+            public function mount($prefix, $controllers)
+            {
+                $this->mountingPoints[] = $prefix;
             }
         };
 
@@ -178,6 +197,9 @@ class PluginManagerTest extends TestCase
 
         $this->assertSame(6, $this->viewManager->count);
         $this->assertSame(2, $this->serviceContainer->count);
+
+        $this->assertContains('/path/to/heaven', $this->serviceContainer->mountingPoints);
+        $this->assertCount(1, $this->serviceContainer->mountingPoints);
     }
 
     /**

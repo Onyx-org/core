@@ -51,6 +51,7 @@ class PluginManager implements LoggerAwareInterface
         $this->loadPluginConfiguration($plugin);
         $this->loadPluginViews($plugin);
         $this->loadPluginProviders($plugin);
+        $this->loadPluginControllers($plugin);
     }
 
     private function loadPluginConfiguration(Plugin $plugin): void
@@ -124,6 +125,19 @@ class PluginManager implements LoggerAwareInterface
                 ));
 
                 $this->serviceContainer->register($provider);
+            }
+        }
+    }
+
+    private function loadPluginControllers(Plugin $plugin): void
+    {
+        $declaration = $plugin->getControllers();
+
+        if($declaration instanceof ControllersDeclaration)
+        {
+            foreach($declaration->getMountPoints() as list($prefix, $controllerProvider))
+            {
+                $this->serviceContainer->mount($prefix, $controllerProvider);
             }
         }
     }

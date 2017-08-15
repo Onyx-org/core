@@ -6,6 +6,7 @@ namespace Onyx\Plugins;
 
 use Onyx\Plugin;
 use Puzzle\Configuration;
+use Onyx\ControllersDeclaration;
 
 abstract class AbstractPlugin implements Plugin
 {
@@ -27,6 +28,11 @@ abstract class AbstractPlugin implements Plugin
     public function getProviders(): iterable
     {
         return [];
+    }
+
+    public function getControllers(): ?ControllersDeclaration
+    {
+        return null;
     }
 
     public function getConsoleCommands(): iterable
