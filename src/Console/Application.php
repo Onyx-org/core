@@ -3,7 +3,6 @@
 namespace Onyx\Console;
 
 use Onyx\CommandContainer;
-use Onyx\PluginManager;
 use Pimple\Container;
 
 class Application extends \Symfony\Component\Console\Application implements CommandContainer
