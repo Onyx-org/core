@@ -62,7 +62,7 @@ class PluginManager implements LoggerAwareInterface
 
             if($pluginConfiguration instanceof Configuration)
             {
-                $this->logger->info(sprintf(
+                $this->logger->debug(sprintf(
                     '[%s] Loading configuration',
                     $plugin->getName()
                 ));
@@ -80,7 +80,7 @@ class PluginManager implements LoggerAwareInterface
 
             if(! empty($directories))
             {
-                $this->logger->info(sprintf(
+                $this->logger->debug(sprintf(
                     '[%s] Loading views directories (%d)',
                     $plugin->getName(),
                     count($directories)
@@ -99,7 +99,7 @@ class PluginManager implements LoggerAwareInterface
 
             if(! empty($directories))
             {
-                $this->logger->info(sprintf(
+                $this->logger->debug(sprintf(
                     '[%s] Loading override views directories (%d)',
                     $plugin->getName(),
                     count($directories)
@@ -118,7 +118,7 @@ class PluginManager implements LoggerAwareInterface
         {
             if($provider instanceof ServiceProviderInterface)
             {
-                $this->logger->info(sprintf(
+                $this->logger->debug(sprintf(
                     '[%s] Loading provider %s',
                     $plugin->getName(),
                     get_class($provider)
@@ -137,6 +137,11 @@ class PluginManager implements LoggerAwareInterface
         {
             foreach($declaration->getMountPoints() as list($prefix, $controllerProvider))
             {
+                $this->logger->debug(sprintf(
+                    '[%s] Mounting controller',
+                    $plugin->getName()
+                ), ['prefix' => $prefix]);
+
                 $this->serviceContainer->mount($prefix, $controllerProvider);
             }
         }
