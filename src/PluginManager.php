@@ -42,6 +42,12 @@ class PluginManager implements LoggerAwareInterface
         {
             $this->loadPluginOverrideViews($plugin);
         }
+
+        $this->loadCustomServices($plugins);
+    }
+
+    protected function loadCustomServices(array $plugins): void
+    {
     }
 
     private function loadPlugin(Plugin $plugin): void
