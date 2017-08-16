@@ -12,21 +12,29 @@ use Psr\Log\NullLogger;
 use Psr\Log\LoggerAwareInterface;
 use Symfony\Component\Console\Command\Command;
 
-class PluginManager implements LoggerAwareInterface
+final class PluginManager implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
     private
         $configuration,
         $viewManager,
-        $serviceContainer;
+        $serviceContainer,
+        $extensions;
 
     public function __construct(Configuration $configuration, ?ViewManager $viewManager, ServiceContainer $serviceContainer)
     {
         $this->configuration = $configuration;
         $this->viewManager = $viewManager;
         $this->serviceContainer = $serviceContainer;
+        $this->extensions = [];
+
         $this->logger = new NullLogger();
+    }
+
+    public function addExtension(PluginManagerExtension $extension): void
+    {
+        $this->extensions[] = $extension;
     }
 
     public function load(): void
@@ -43,11 +51,10 @@ class PluginManager implements LoggerAwareInterface
             $this->loadPluginOverrideViews($plugin);
         }
 
-        $this->loadCustomServices($plugins);
-    }
-
-    protected function loadCustomServices(array $plugins): void
-    {
+        foreach($this->extensions as $extension)
+        {
+            $extension->loadCustomServices($plugins);
+        }
     }
 
     private function loadPlugin(Plugin $plugin): void

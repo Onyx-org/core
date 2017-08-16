@@ -137,7 +137,8 @@ class PluginManagerTest extends TestCase
         $stackedConfiguration,
         $viewManager,
         $serviceContainer,
-        $commandContainer;
+        $commandContainer,
+        $extension;
 
     protected function setUp()
     {
@@ -183,11 +184,20 @@ class PluginManagerTest extends TestCase
                 $this->count++;
             }
         };
+
+        $this->extension = new class implements PluginManagerExtension {
+            public $called = false;
+            public function loadCustomServices(array $plugins): void
+            {
+                $this->called = count($plugins) > 0;
+            }
+        };
     }
 
     public function testLoad()
     {
         $manager = new PluginManager($this->stackedConfiguration, $this->viewManager, $this->serviceContainer);
+        $manager->addExtension($this->extension);
         $manager->load();
 
         $this->assertConfiguration('cloud', 'pony');
@@ -200,6 +210,8 @@ class PluginManagerTest extends TestCase
 
         $this->assertContains('/path/to/heaven', $this->serviceContainer->mountingPoints);
         $this->assertCount(1, $this->serviceContainer->mountingPoints);
+
+        $this->assertTrue($this->extension->called);
     }
 
     /**
