@@ -24,9 +24,10 @@ abstract class Application extends \Silex\Application implements ServiceContaine
         $this->initializePaths($rootDir);
 
         $this->register(new ServiceControllerServiceProvider());
+        $this->registerPluginManager();
         $this->registerProviders();
-        $this->initializeUrlGeneratorProvider();
 
+        $this->initializeUrlGeneratorProvider();
         $this->initializeServices();
         $this->initializePlugins();
 
@@ -58,7 +59,7 @@ abstract class Application extends \Silex\Application implements ServiceContaine
     {
     }
 
-    private function initializePlugins(): void
+    private function registerPluginManager(): void
     {
         $this['plugin.manager'] = function() {
             $viewManager = null;
@@ -80,7 +81,10 @@ abstract class Application extends \Silex\Application implements ServiceContaine
 
             return $manager;
         };
+    }
 
+    private function initializePlugins(): void
+    {
         $this['plugin.manager']->load();
     }
 
