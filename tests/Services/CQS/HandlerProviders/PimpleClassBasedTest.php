@@ -17,7 +17,7 @@ use Onyx\Services\CQS\Command;
 class PimpleClassBasedTest extends TestCase
 {
     /**
-     * @expectedException \LogicException
+     * @expectedException \Onyx\Services\CQS\HandlerProviders\Exceptions\NoValidHandlerFound
      */
     public function testNoQueryHandlerFoundException()
     {

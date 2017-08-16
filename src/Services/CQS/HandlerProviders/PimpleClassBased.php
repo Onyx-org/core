@@ -11,6 +11,7 @@ use Onyx\Services\CQS\Query;
 use Onyx\Services\CQS\CommandHandlerProvider;
 use Onyx\Services\CQS\Command;
 use Onyx\Services\CQS\CommandHandler;
+use Onyx\Services\CQS\HandlerProviders\Exceptions\NoValidHandlerFound;
 
 class PimpleClassBased implements QueryHandlerProvider, CommandHandlerProvider
 {
@@ -52,7 +53,7 @@ class PimpleClassBased implements QueryHandlerProvider, CommandHandlerProvider
 
         if(! $this->container->offsetExists($key))
         {
-            throw new \LogicException(sprintf('The service "%s" does not exist in container', $key));
+            throw new NoValidHandlerFound(sprintf('The service "%s" does not exist in container', $key));
         }
 
         return $this->container[$key];

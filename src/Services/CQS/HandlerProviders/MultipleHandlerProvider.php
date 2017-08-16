@@ -10,6 +10,7 @@ use Onyx\Services\CQS\Query;
 use Onyx\Services\CQS\QueryHandler;
 use Onyx\Services\CQS\Command;
 use Onyx\Services\CQS\CommandHandler;
+use Onyx\Services\CQS\HandlerProviders\Exceptions\NoValidHandlerFound;
 
 class MultipleHandlerProvider implements QueryHandlerProvider, CommandHandlerProvider
 {
@@ -45,13 +46,13 @@ class MultipleHandlerProvider implements QueryHandlerProvider, CommandHandlerPro
                 $handler = $provider->findQueryHandlerFor($query);
                 return $handler;
             }
-            catch(\LogicException $e)
+            catch(NoValidHandlerFound $e)
             {
                 continue;
             }
         }
 
-        throw new \LogicException(sprintf('Handler not found for query %s', get_class($query)));
+        throw new NoValidHandlerFound(sprintf('Handler not found for query %s', get_class($query)));
     }
 
     public function findCommandHandlerFor(Command $command): CommandHandler
@@ -63,12 +64,12 @@ class MultipleHandlerProvider implements QueryHandlerProvider, CommandHandlerPro
                 $handler = $provider->findCommandHandlerFor($command);
                 return $handler;
             }
-            catch(\LogicException $e)
+            catch(NoValidHandlerFound $e)
             {
                 continue;
             }
         }
 
-        throw new \LogicException(sprintf('Handler not found for command %s', get_class($command)));
+        throw new NoValidHandlerFound(sprintf('Handler not found for command %s', get_class($command)));
     }
 }

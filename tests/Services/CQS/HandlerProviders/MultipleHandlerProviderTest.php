@@ -76,7 +76,7 @@ class MultipleHandlerProviderTest extends TestCase
     }
 
     /**
-     * @expectedException \LogicException
+     * @expectedException \Onyx\Services\CQS\HandlerProviders\Exceptions\NoValidHandlerFound
      */
     public function testQueryHandlerNotFound()
     {
@@ -84,7 +84,7 @@ class MultipleHandlerProviderTest extends TestCase
     }
 
     /**
-     * @expectedException \LogicException
+     * @expectedException \Onyx\Services\CQS\HandlerProviders\Exceptions\NoValidHandlerFound
      */
     public function testCommandHandlerNotFound()
     {
