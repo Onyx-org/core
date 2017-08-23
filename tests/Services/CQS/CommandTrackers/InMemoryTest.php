@@ -37,4 +37,12 @@ class InMemoryTest extends TestCase
 
         $this->assertEquals('taupe', $this->tracker->retrieveTrackedData('rene'));
     }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testRetrieveUnknownData()
+    {
+        $this->tracker->retrieveTrackedData('unknown-data');
+    }
 }

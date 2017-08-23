@@ -8,10 +8,10 @@ use Onyx\Services\CQS\CommandTracker;
 
 class InMemory implements CommandTracker
 {
-    public
+    private
         $data;
 
-    public function __construct(iterable $data = [])
+    public function __construct(array $data = [])
     {
         $this->data = $data;
     }
@@ -23,6 +23,11 @@ class InMemory implements CommandTracker
 
     public function retrieveTrackedData(string $trackingId)
     {
+        if (! array_key_exists($trackingId, $this->data))
+        {
+            throw new \RuntimeException(sprintf('Tracking id "%s" not found in command tracker', $trackingId));
+        }
+
         return $this->data[$trackingId];
     }
 }
