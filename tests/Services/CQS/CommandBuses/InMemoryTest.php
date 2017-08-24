@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace Onyx\Services\CQS\CommandBuses;
 
 use Onyx\Services\CQS\Command;
+use Onyx\Services\CQS\CommandBus;
+use Onyx\Services\CQS\CommandHandlers\ClosureBased;
 use PHPUnit\Framework\TestCase;
 
 class InMemoryTest extends TestCase
@@ -36,5 +38,17 @@ class InMemoryTest extends TestCase
         $bus->send($this->command2);
         $this->assertCount(3, $bus->getSentCommands());
         $this->assertSame($this->command2, $bus->getLastSentCommand());
+    }
+
+    public function testUniqueHandler()
+    {
+        $command = new class implements Command{ public $theCommandHasBeenHandled; };
+
+        $bus = new InMemory(new ClosureBased(function(Command $command) {
+            $command->theCommandHasBeenHandled = true;
+        }));
+        $bus->send($command);
+
+        $this->assertTrue($command->theCommandHasBeenHandled);
     }
 }
