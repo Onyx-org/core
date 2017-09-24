@@ -16,7 +16,7 @@ core-wizard-set-namespace:
 	$(info Backslashes must be replaced by ::. Example : My::Onyx::Skeleton::Namespace)
 	$(info )
 	# This line below breaks the make autocompletion. Need to find why
-	$(eval NEW_NAMESPACE := $(call ask_for, 'application newNamespace', 'newNamespace'))
+	$(eval NEW_NAMESPACE := $(call ask_for, 'New_Namespace', 'My::Onyx::Skeleton::Namespace'))
 	$(eval BACKSLASHED_NAMESPACE := $(call convert-namespace,$(NAMESPACE)))
 	$(eval BACKSLASHED_NEW_NAMESPACE := $(call convert-namespace,$(NEW_NAMESPACE)))
 	$(eval ESCAPED_NAMESPACE := $(subst \\,\\\\,$(BACKSLASHED_NAMESPACE)))
