@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace __ONYX_Namespace\Controllers\__ONYX_ControllerName;
+namespace __ONYX_Namespace\Controllers\__ONYX_BackOrFront\__ONYX_ControllerName;
 
 use Onyx\Traits;
 use Symfony\Component\HttpFoundation\Response;
