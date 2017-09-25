@@ -8,6 +8,8 @@ use Onyx\Services\CQS\QueryBuses;
 use Onyx\Services\CQS\CommandBuses;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 trait ControllerTestCaseRelated
 {
@@ -17,7 +19,7 @@ trait ControllerTestCaseRelated
 
     private function initializeControllerForTest($controller)
     {
-        $traits = $this->retrieveTraitsRecursively($controller);
+        $traits = self::retrieveTraitsRecursively($controller);
 
         if(in_array(TwigAware::class, $traits))
         {
@@ -53,7 +55,17 @@ trait ControllerTestCaseRelated
         }
     }
 
-    private function retrieveTraitsRecursively($class, $autoload = true): array
+    private function setRequest(array $values)
+    {
+        $request = new Request([], $values);
+
+        $requestStack = new RequestStack();
+        $requestStack->push($request);
+
+        $this->controller->setRequest($requestStack);
+    }
+
+    private static function retrieveTraitsRecursively($class, $autoload = true): array
     {
         $traits = [];
 
