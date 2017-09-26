@@ -22,11 +22,11 @@ class InMemory implements QueryBus
         $this->sentQueries = [];
     }
 
-    public function send(Query $Query): QueryResult
+    public function send(Query $query): QueryResult
     {
-        $this->sentQueries[] = $Query;
+        $this->sentQueries[] = $query;
 
-        return $this->uniqueHandler->handle($Query);
+        return $this->uniqueHandler->handle($query);
     }
 
     public function getSentQueries(): iterable
@@ -45,13 +45,13 @@ class InMemory implements QueryBus
         return $lastQuery;
     }
 
-    private function setUniqueQueryHandler(?QueryHandler $QueryHandler): void
+    private function setUniqueQueryHandler(?QueryHandler $queryHandler): void
     {
         $handler = new NullQueryHandler();
 
-        if($QueryHandler instanceof QueryHandler)
+        if($queryHandler instanceof QueryHandler)
         {
-            $handler = $QueryHandler;
+            $handler = $queryHandler;
         }
 
         $this->uniqueHandler = $handler;
