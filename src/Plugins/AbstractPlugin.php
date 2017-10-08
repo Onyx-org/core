@@ -20,6 +20,11 @@ abstract class AbstractPlugin implements Plugin
         return [];
     }
 
+    public function getViewExtensions(): iterable
+    {
+        return [];
+    }
+
     public function getOverrideViewDirectories(): iterable
     {
         return [];

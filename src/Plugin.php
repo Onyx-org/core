@@ -24,6 +24,11 @@ interface Plugin
     public function getViewDirectories(): iterable;
 
     /**
+     * Will be loaded at bootstrap
+     */
+    public function getViewExtensions(): iterable;
+
+    /**
      * from the least prioritary directory to the most prioritary one
      */
     public function getOverrideViewDirectories(): iterable;

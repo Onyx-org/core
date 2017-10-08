@@ -9,14 +9,17 @@ use Puzzle\Configuration;
 use Pimple\Container;
 use Silex\Provider\TwigServiceProvider;
 use Onyx\ViewManager;
+use Onyx\Plugins\ViewExtensionInContainer;
 
 class Twig implements ServiceProviderInterface, ViewManager
 {
     private
+        $extensions,
         $paths;
 
     public function register(Container $container): void
     {
+        $this->extensions = [];
         $this->paths = [];
 
         $this->validatePuzzleConfiguration($container);
@@ -41,6 +44,35 @@ class Twig implements ServiceProviderInterface, ViewManager
         {
             $arrayAddFunction($this->paths, $path);
         }
+    }
+
+    public function addExtension($extension): void
+    {
+        $this->extensions[] = $extension;
+    }
+
+    public function getExtensions(): iterable
+    {
+        return $this->extensions;
+    }
+
+    public function retrieveExtensionInstance($extension, Container $container)
+    {
+        if($extension instanceof \Twig_Extension)
+        {
+            return $extension;
+        }
+
+        if($extension instanceof ViewExtensionInContainer)
+        {
+            $key = $extension->key();
+            if($container->offsetExists($key))
+            {
+                return $container[$key];
+            }
+        }
+
+        return null;
     }
 
     private function initializeTwigProvider(Container $container): void

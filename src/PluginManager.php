@@ -101,6 +101,13 @@ final class PluginManager implements LoggerAwareInterface
 
                 $this->viewManager->addPath($directories, false);
             }
+
+            $extensions = $plugin->getViewExtensions();
+
+            foreach($extensions as $extension)
+            {
+                $this->viewManager->addExtension($extension);
+            }
         }
     }
 
