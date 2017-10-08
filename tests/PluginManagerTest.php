@@ -162,6 +162,10 @@ class PluginManagerTest extends TestCase
             {
                 $this->count += count($paths);
             }
+
+            public function addExtension($extension): void {}
+            public function getExtensions(): iterable { return []; }
+            public function retrieveExtensionInstance($extension, Container $container) { return null; }
         };
 
         $this->serviceContainer = new class implements ServiceContainer {
