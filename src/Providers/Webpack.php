@@ -18,7 +18,7 @@ class Webpack implements ServiceProviderInterface
         $container['webpack.chunk.manifest.path'] = $this->enforceEndingSlash($container['root.path']) . '/www/assets/chunk-manifest.json';
 
         $container['webpack.manifest'] = function($c) {
-            return new Manifest($c['webpack.manifest.path'], $c['webpack.chunk.manifest.path']);
+            return new Manifest\Local($c['webpack.manifest.path'], $c['webpack.chunk.manifest.path']);
         };
 
         if($container->offsetExists('twig'))
