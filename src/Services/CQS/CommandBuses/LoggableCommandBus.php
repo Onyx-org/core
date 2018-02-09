@@ -9,16 +9,17 @@ use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use Onyx\Services\CQS\Loggable;
 use Psr\Log\LogLevel;
-use Puzzle\Pieces\ConvertibleToString;
 use Puzzle\Pieces\StringManipulation;
+use Onyx\Services\CQS\Command;
 
 class LoggableCommandBus implements CommandBus
 {
     use LoggerAwareTrait;
     use StringManipulation;
 
-    private
+    protected
         $bus,
+        $blacklist,
         $currentUser,
         $level;
 
@@ -26,6 +27,7 @@ class LoggableCommandBus implements CommandBus
     {
         $this->bus = $bus;
 
+        $this->blacklist = [];
         $this->level = LogLevel::INFO;
         $this->currentUser = $this->isConvertibleToString($currentUser) ? $currentUser : null;
         $this->logger = new NullLogger();
@@ -36,40 +38,48 @@ class LoggableCommandBus implements CommandBus
         $this->level = $level;
     }
 
+    public function excludeClassFromLog(array $classnames): void
+    {
+        $this->blacklist += $classnames;
+    }
+
     public function send(Command $command): void
     {
-        $this->log($command);
+        if($this->mustLog($command))
+        {
+            $this->log($command);
+        }
+
         $this->bus->send($command);
     }
 
-    private function log(Command $command): void
+    protected function mustLog($command): bool
     {
-        $message = '';
-        $context = [];
+        return ! in_array(get_class($command), $this->blacklist);
+    }
+
+    protected function log(Command $command): void
+    {
+        $message = 'Command sent';
+        $context = [
+            '_command' => $this->commandName($command),
+        ];
 
         if($command instanceof Loggable)
         {
-            $message = $command->logMessage();
-            $context = $command->logContext();
-        }
-        else
-        {
-            list($message, $context) = $this->buildLogEntry($command);
+            $context += $command->logContext();
         }
 
-        $context['_user'] = (string) $this->currentUser;
+        if($this->currentUser !== null)
+        {
+            $context['_user'] = (string) $this->currentUser;
+        }
 
         $this->logger->log($this->level, $message, $context);
     }
 
-    protected function buildLogEntry(Command $command): array
+    protected function commandName(Command $command): string
     {
-        $message = 'Command sent';
-
-        $context = [
-            'command' => get_class($command),
-        ];
-
-        return [$message, $context];
+        return get_class($command);
     }
 }

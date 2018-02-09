@@ -6,6 +6,5 @@ namespace Onyx\Services\CQS;
 
 interface Loggable
 {
-    public function logMessage(): string;
     public function logContext(): array;
 }
