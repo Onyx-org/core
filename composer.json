@@ -10,7 +10,7 @@
         "twig/twig": "~1.27",
         "symfony/console" : "~3.1",
         "symfony/twig-bridge" : "~3.1",
-        "puzzle/pieces": "~2.0",
+        "puzzle/pieces": "~2.2",
         "monolog/monolog": "~1.22",
         "psr/log": "~1.0",
         "ramsey/uuid": "~3.6"
