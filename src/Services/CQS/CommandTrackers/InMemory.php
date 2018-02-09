@@ -6,6 +6,9 @@ namespace Onyx\Services\CQS\CommandTrackers;
 
 use Onyx\Services\CQS\CommandTracker;
 
+/**
+ * @deprecated Use Synchronous implementation instead
+ */
 class InMemory implements CommandTracker
 {
     private
