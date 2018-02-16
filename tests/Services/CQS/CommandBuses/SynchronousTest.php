@@ -9,18 +9,24 @@ use Onyx\Services\CQS\Command;
 use Onyx\Services\CQS\CommandHandler;
 use Onyx\Services\CQS\CommandHandlerProvider;
 use PHPUnit\Framework\TestCase;
+use Onyx\Services\CQS\CommandHandlers\ClosureBased;
 
 class SynchronousTest extends TestCase
 {
     public function testSend()
     {
-        $handler = $this->spyCommandHandler();
-        $provider = $this->buildCommandHandlerProvider($handler);
+        $called = false;
+
+        $provider = $this->buildCommandHandlerProvider(
+            new ClosureBased(function(Command $command) use(& $called): void {
+                $called = true;
+            })
+        );
 
         $synchronousBus = new Synchronous($provider);
         $synchronousBus->send(new NullCommand);
 
-        $this->assertSame(1, $handler->callCount);
+        $this->assertTrue($called);
     }
 
     private function buildCommandHandlerProvider(CommandHandler $commandHandler)
@@ -37,18 +43,6 @@ class SynchronousTest extends TestCase
             public function findCommandHandlerFor(Command $command): CommandHandler
             {
                 return $this->commandHandler;
-            }
-        };
-    }
-
-    private function spyCommandHandler()
-    {
-        return new Class implements CommandHandler {
-            public $callCount = 0;
-
-            public function handle(Command $command): void
-            {
-                $this->callCount++;
             }
         };
     }

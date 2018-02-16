@@ -11,18 +11,25 @@ use Onyx\Services\CQS\QueryHandler;
 use Onyx\Services\CQS\QueryHandlerProvider;
 use PHPUnit\Framework\TestCase;
 use Onyx\Services\CQS\QueryResults\NullQueryResult;
+use Onyx\Services\CQS\QueryHandlers\ClosureBased;
 
 class SynchronousTest extends TestCase
 {
     public function testSend()
     {
-        $handler = $this->spyQueryHandler();
-        $provider = $this->buildQueryHandlerProvider($handler);
+        $called = false;
+
+        $provider = $this->buildQueryHandlerProvider(
+            new ClosureBased(function(Query $query) use(& $called): QueryResult {
+                $called = true;
+                return new NullQueryResult();
+            })
+        );
 
         $synchronousBus = new Synchronous($provider);
         $synchronousBus->send(new NullQuery());
 
-        $this->assertSame(1, $handler->callCount);
+        $this->assertTrue($called);
     }
 
     private function buildQueryHandlerProvider(QueryHandler $queryHandler)
@@ -39,20 +46,6 @@ class SynchronousTest extends TestCase
             public function findQueryHandlerFor(Query $query): QueryHandler
             {
                 return $this->queryHandler;
-            }
-        };
-    }
-
-    private function spyQueryHandler()
-    {
-        return new Class implements QueryHandler {
-            public $callCount = 0;
-
-            public function handle(Query $query): QueryResult
-            {
-                $this->callCount++;
-
-                return new NullQueryResult();
             }
         };
     }
