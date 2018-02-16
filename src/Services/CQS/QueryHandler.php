@@ -6,7 +6,8 @@ namespace Onyx\Services\CQS;
 
 interface QueryHandler
 {
-    public function accept(Query $query): bool;
-
-    public function handle(Query $query): QueryResult;
+    /**
+     * Commented to allow precise type-hinting
+     */
+    // public function handle(Query $query): QueryResult;
 }

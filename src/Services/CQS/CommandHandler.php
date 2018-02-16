@@ -6,7 +6,8 @@ namespace Onyx\Services\CQS;
 
 interface CommandHandler
 {
-    public function accept(Command $command): bool;
-
-    public function handle(Command $command): void;
+    /**
+     * Commented to allow precise type-hinting
+     */
+    // public function handle(Command $command): void;
 }

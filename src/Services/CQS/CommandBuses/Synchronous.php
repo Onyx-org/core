@@ -21,14 +21,6 @@ class Synchronous implements CommandBus
     public function send(Command $command): void
     {
         $handler = $this->commandHandlerProvider->findCommandHandlerFor($command);
-
-        if($handler->accept($command))
-        {
-            $handler->handle($command);
-
-            return;
-        }
-
-        throw new \LogicException('No handler found for command ' . get_class($command));
+        $handler->handle($command);
     }
 }

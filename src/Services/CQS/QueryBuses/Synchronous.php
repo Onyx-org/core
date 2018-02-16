@@ -23,11 +23,6 @@ class Synchronous implements QueryBus
     {
         $handler = $this->queryHandlerProvider->findQueryHandlerFor($query);
 
-        if($handler->accept($query))
-        {
-            return $handler->handle($query);
-        }
-
-        throw new \LogicException('No handler found for query ' . get_class($query));
+        return $handler->handle($query);
     }
 }
