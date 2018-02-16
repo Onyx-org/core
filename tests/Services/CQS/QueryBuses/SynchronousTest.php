@@ -10,32 +10,19 @@ use Onyx\Services\CQS\QueryResult;
 use Onyx\Services\CQS\QueryHandler;
 use Onyx\Services\CQS\QueryHandlerProvider;
 use PHPUnit\Framework\TestCase;
+use Onyx\Services\CQS\QueryResults\NullQueryResult;
 
 class SynchronousTest extends TestCase
 {
-    /**
-     * @expectedException \LogicException
-     */
-    public function testSendException()
-    {
-        $queryHandler = $this->buildRefusedQueryQueryHandler();
-        $queryHandlerProvider = $this->buildQueryHandlerProvider($queryHandler);
-
-        $synchronousBus = new Synchronous($queryHandlerProvider);
-
-        $synchronousBus->send(new NullQuery());
-    }
-
     public function testSend()
     {
-        $queryHandler = $this->buildAcceptedQueryQueryHandler();
-        $queryHandlerProvider = $this->buildQueryHandlerProvider($queryHandler);
+        $handler = $this->spyQueryHandler();
+        $provider = $this->buildQueryHandlerProvider($handler);
 
-        $synchronousBus = new Synchronous($queryHandlerProvider);
-
+        $synchronousBus = new Synchronous($provider);
         $synchronousBus->send(new NullQuery());
 
-        $this->assertSame(1, $queryHandler->callCount);
+        $this->assertSame(1, $handler->callCount);
     }
 
     private function buildQueryHandlerProvider(QueryHandler $queryHandler)
@@ -56,33 +43,16 @@ class SynchronousTest extends TestCase
         };
     }
 
-    private function buildRefusedQueryQueryHandler()
-    {
-        return new Class implements QueryHandler {
-            public function accept(Query $query): bool
-            {
-                return false;
-            }
-            public function handle(Query $query): QueryResult
-            {
-            }
-        };
-    }
-
-    private function buildAcceptedQueryQueryHandler()
+    private function spyQueryHandler()
     {
         return new Class implements QueryHandler {
             public $callCount = 0;
 
-            public function accept(Query $query): bool
-            {
-                return true;
-            }
             public function handle(Query $query): QueryResult
             {
                 $this->callCount++;
 
-                return new Class implements QueryResult {};
+                return new NullQueryResult();
             }
         };
     }

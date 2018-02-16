@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Onyx\Services\CQS\CommandBuses;
 
 use Onyx\Services\CQS\Command;
-use Onyx\Services\CQS\CommandBus;
 use Onyx\Services\CQS\CommandHandlers\ClosureBased;
 use PHPUnit\Framework\TestCase;
 
