@@ -12,29 +12,15 @@ use PHPUnit\Framework\TestCase;
 
 class SynchronousTest extends TestCase
 {
-    /**
-     * @expectedException \LogicException
-     */
-    public function testSendException()
-    {
-        $commandHandler = $this->buildRefusedCommandCommandHandler();
-        $commandHandlerProvider = $this->buildCommandHandlerProvider($commandHandler);
-
-        $synchronousBus = new Synchronous($commandHandlerProvider);
-
-        $synchronousBus->send(new NullCommand);
-    }
-
     public function testSend()
     {
-        $commandHandler = $this->buildAcceptedCommandCommandHandler();
-        $commandHandlerProvider = $this->buildCommandHandlerProvider($commandHandler);
+        $handler = $this->spyCommandHandler();
+        $provider = $this->buildCommandHandlerProvider($handler);
 
-        $synchronousBus = new Synchronous($commandHandlerProvider);
-
+        $synchronousBus = new Synchronous($provider);
         $synchronousBus->send(new NullCommand);
 
-        $this->assertSame(1, $commandHandler->callCount);
+        $this->assertSame(1, $handler->callCount);
     }
 
     private function buildCommandHandlerProvider(CommandHandler $commandHandler)
@@ -55,28 +41,11 @@ class SynchronousTest extends TestCase
         };
     }
 
-    private function buildRefusedCommandCommandHandler()
-    {
-        return new Class implements CommandHandler {
-            public function accept(Command $command): bool
-            {
-                return false;
-            }
-            public function handle(Command $command): void
-            {
-            }
-        };
-    }
-
-    private function buildAcceptedCommandCommandHandler()
+    private function spyCommandHandler()
     {
         return new Class implements CommandHandler {
             public $callCount = 0;
 
-            public function accept(Command $command): bool
-            {
-                return true;
-            }
             public function handle(Command $command): void
             {
                 $this->callCount++;

@@ -11,24 +11,6 @@ use Onyx\Services\CQS\QueryResults\NullQueryResult;
 
 class ClosureBasedTest extends TestCase
 {
-    /**
-     * @dataProvider providerTestAccept
-     */
-    public function testAccept(Query $query)
-    {
-        $handler = new ClosureBased(function ($query) {});
-
-        $this->assertTrue($handler->accept($query));
-    }
-
-    public function providerTestAccept()
-    {
-        return [
-            [new NullQuery()],
-            [new class implements Query {}],
-        ];
-    }
-
     public function testSend()
     {
         $result = new NullQueryResult();
