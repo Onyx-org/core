@@ -11,11 +11,6 @@ use Onyx\Services\CQS\QueryResults\NullQueryResult;
 
 class NullQueryHandler implements QueryHandler
 {
-    public function accept(Query $query): bool
-    {
-        return true;
-    }
-
     public function handle(Query $query): QueryResult
     {
         return new NullQueryResult();

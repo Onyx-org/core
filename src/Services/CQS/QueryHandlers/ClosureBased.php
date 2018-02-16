@@ -18,11 +18,6 @@ class ClosureBased implements QueryHandler
         $this->closure = $closure;
     }
 
-    public function accept(Query $query): bool
-    {
-        return true;
-    }
-
     public function handle(Query $query): QueryResult
     {
         $closure = $this->closure;

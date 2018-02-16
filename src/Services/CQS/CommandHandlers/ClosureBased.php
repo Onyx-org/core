@@ -17,11 +17,6 @@ class ClosureBased implements CommandHandler
         $this->closure = $closure;
     }
 
-    public function accept(Command $command): bool
-    {
-        return true;
-    }
-
     public function handle(Command $command): void
     {
         $closure = $this->closure;
