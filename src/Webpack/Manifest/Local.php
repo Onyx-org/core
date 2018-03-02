@@ -39,12 +39,12 @@ class Local implements Manifest
 
         if(!$manifest)
         {
-            throw new \Exception(sprintf('Could not decode %s. Is it valid JSON?', $this->manifestPath));
+            throw new \Exception(sprintf('Could not decode %s. Is it valid JSON?', $manifestPath));
         }
 
         if(!is_array($manifest))
         {
-            throw new \Exception(sprintf('Expected an array from Webpack manifest %s', $this->manifestPath));
+            throw new \Exception(sprintf('Expected an array from Webpack manifest %s', $manifestPath));
         }
 
         $this->files = $manifest;
