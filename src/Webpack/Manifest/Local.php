@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace Onyx\Webpack\Manifest;
 
+use Psr\Log\LoggerInterface;
 use Onyx\Webpack\Manifest;
+use Puzzle\Pieces\Json;
 
 class Local implements Manifest
 {
@@ -12,10 +14,13 @@ class Local implements Manifest
         $files,
         $chunkManifest;
 
-    public function __construct(string $manifestPath, string $chunkManifestPath)
+    public function __construct(string $manifestPath, string $chunkManifestPath, LoggerInterface $logger)
     {
-        $this->setFiles($manifestPath);
-        $this->setChunkManifest($chunkManifestPath);
+        // Must be set first
+        $this->logger = $logger;
+
+        $this->files = $this->setFiles($manifestPath);
+        $this->chunkManifest = $this->loadFileContent($chunkManifestPath);
     }
 
     public function getFiles(): array
@@ -33,57 +38,54 @@ class Local implements Manifest
         return $this->files[$name];
     }
 
-    private function setFiles(string $manifestPath): void
-    {
-        $manifest = json_decode($this->loadManifest($manifestPath), true);
-
-        if(!$manifest)
-        {
-            throw new \Exception(sprintf('Could not decode %s. Is it valid JSON?', $this->manifestPath));
-        }
-
-        if(!is_array($manifest))
-        {
-            throw new \Exception(sprintf('Expected an array from Webpack manifest %s', $this->manifestPath));
-        }
-
-        $this->files = $manifest;
-    }
-
     public function getChunkManifest(): ?string
     {
         return $this->chunkManifest;
     }
 
-    private function setChunkManifest(string $chunkManifestPath): void
+    private function setFiles(string $path): array
     {
-        if(!is_file($chunkManifestPath))
+        $json = $this->loadFileContent($path);
+
+        if($json === '' || $json === null)
         {
-            return;
+            $this->logger->error('Empty or no Webpack manifest.');
+
+            return [];
         }
 
-        $this->chunkManifest = $this->getFileContent($chunkManifestPath);
+        return $this->decode($json);
     }
 
-    private function loadManifest(string $manifestPath): string
+    private function decode(string $json): array
     {
-        if(!is_file($manifestPath))
+        $data = Json::decode($json, true);
+
+        if(!is_array($data))
         {
-            throw new \Exception(sprintf('The file %s could not be found. Did you forget to run webpack?', $manifestPath));
+            $this->logger->error('Expected an array from Webpack manifest.');
+
+            return [];
         }
 
-        return $this->getFileContent($manifestPath);
+        return $data;
     }
 
-    private function getFileContent(string $path): string
+    private function loadFileContent(string $path): ?string
     {
-        $JSONManifest = file_get_contents($path);
-
-        if($JSONManifest === false)
+        if(!is_file($path))
         {
-            throw new \Exception(sprintf('Something went wrong while trying to read the file %s', $path));
+            return null;
         }
 
-        return $JSONManifest;
+        $content = file_get_contents($path);
+        if($content === false)
+        {
+            $this->logger->error(sprintf('Something went wrong while trying to read the file %s', $path));
+
+            return null;
+        }
+
+        return $content;
     }
 }
