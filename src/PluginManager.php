@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Onyx;
 
+use Onyx\Services\Console\ConsoleContext;
 use Puzzle\Configuration;
 use Puzzle\ConfigurationSystem;
 use Pimple\ServiceProviderInterface;
@@ -227,6 +228,12 @@ final class PluginManager implements LoggerAwareInterface
     {
         foreach($plugin->getConsoleCommands() as $commandDefinition)
         {
+            if (is_string($commandDefinition))
+            {
+                $commandContainer->add($this->createConsoleContext($commandDefinition));
+
+                continue;
+            }
             if(! $commandDefinition instanceof \Closure)
             {
                 throw new \LogicException("Plugin has to return closures when getConsoleCommands is called");
@@ -241,5 +248,15 @@ final class PluginManager implements LoggerAwareInterface
 
             $commandContainer->add($command);
         }
+    }
+
+    private function createConsoleContext(string $consoleClass): ConsoleContext
+    {
+        return new ConsoleContext(
+            $consoleClass,
+            function() use ($consoleClass) {
+                return $this->serviceContainer[$consoleClass];
+            }
+        );
     }
 }

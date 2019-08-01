@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace Onyx\Plugins;
 
 use Onyx\Plugin;
+use Onyx\ServiceContainer;
+use Onyx\Services\Console\ConsoleContext;
 use Puzzle\Configuration;
 use Onyx\ControllersDeclaration;
 
